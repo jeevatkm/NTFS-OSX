@@ -1,14 +1,14 @@
 //
-//  NTFSCommand.m
+//  CommandLine.m
 //  NTFS-OSX
 //
 //  Created by Jeevanandam Madanagopal on 6/5/15.
 //  Copyright (c) 2015 myjeeva.com. All rights reserved.
 //
 
-#import "NTFSCommand.h"
+#import "CommandLine.h"
 
-@implementation NTFSCommand
+@implementation CommandLine
 
 + (NSString *)run:(NSString *) command {
 	NSTask *task = [[NSTask alloc] init];

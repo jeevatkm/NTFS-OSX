@@ -1,27 +1,34 @@
 //
-//  NTFSApplication.m
+//  NTFSApp.m
 //  NTFS-OSX
 //
 //  Created by Jeevanandam Madanagopal on 6/3/15.
 //  Copyright (c) 2015 myjeeva.com. All rights reserved.
 //
 
-#import "NTFSApplication.h"
+#import "NTFSApp.h"
 
-@implementation NTFSApplication
+@implementation NTFSApp
 
 @synthesize statusItem;
 
-- (void)initNtfsApp {
-	// Initializing Status Bar and Menus
-	[self initStatusBar];
+- (id)init {
+    self = [super init];
+    
+    if (self) {
+        // Initializing Status Bar and Menus
+        [self initStatusBar];
+        
+        [self registerVolumesObservers];
+    }
+    
+    return self;
+}
 
-	[self registerVolumesObservers];
-
-
-
-	//[[NSUserDefaults standardUserDefaults] setObject:@"For Test" forKey:@"NTFSTestPref"];
-
+- (void)dealloc {
+    
+    [[[NSWorkspace sharedWorkspace] notificationCenter] removeObserver:self];
+   
 }
 
 
@@ -147,11 +154,6 @@
 
 	   NSLog(@"words output: %@", words); */
 
-}
-
-- (void)dealloc {
-	//[[NSNotificationCenter defaultCenter] removeObserver: self];
-	[[[NSWorkspace sharedWorkspace] notificationCenter] removeObserver:self];
 }
 
 @end

@@ -1,5 +1,5 @@
 //
-//  NTFSApplication.h
+//  NTFSApp.h
 //  NTFS-OSX
 //
 //  Created by Jeevanandam Madanagopal on 6/3/15.
@@ -8,11 +8,9 @@
 
 @import AppKit;
 
-@interface NTFSApplication : NSObject {
+@interface NTFSApp : NSObject {
 }
 
 @property(strong, nonatomic) NSStatusItem *statusItem;
-
-- (void)initNtfsApp;
 
 @end

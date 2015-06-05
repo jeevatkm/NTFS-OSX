@@ -8,10 +8,10 @@
 
 @import AppKit;
 
-@class NTFSApplication;
+@class NTFSApp;
 
 @interface AppDelegate : NSObject<NSApplicationDelegate> {
-	NTFSApplication *app;
+	NTFSApp *app;
 }
 
 @end

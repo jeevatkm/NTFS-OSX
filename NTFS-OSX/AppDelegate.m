@@ -7,7 +7,7 @@
 //
 
 #import "AppDelegate.h"
-#import "NTFSApplication.h"
+#import "NTFSApp.h"
 
 @interface AppDelegate (NFTSOSX)
 
@@ -18,9 +18,9 @@
 @implementation AppDelegate
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
-	app = [[NTFSApplication alloc] init];
-	[app initNtfsApp];
-
+    
+    app = [NTFSApp new];
+    
 	NSLog(@"NTFS OSX is loaded successfully.");
 }
 
