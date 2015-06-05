@@ -7,6 +7,7 @@
 //
 
 #import "NTFSApp.h"
+#import "Arbitration.h"
 
 @implementation NTFSApp
 
@@ -19,7 +20,9 @@
         // Initializing Status Bar and Menus
         [self initStatusBar];
         
-        [self registerVolumesObservers];
+        InitArbitration();
+        
+        //[self registerVolumesObservers];
     }
     
     return self;
@@ -27,7 +30,7 @@
 
 - (void)dealloc {
     
-    [[[NSWorkspace sharedWorkspace] notificationCenter] removeObserver:self];
+    //[[[NSWorkspace sharedWorkspace] notificationCenter] removeObserver:self];
    
 }
 

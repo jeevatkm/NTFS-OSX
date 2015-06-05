@@ -6,8 +6,15 @@
 //  Copyright (c) 2015 myjeeva.com. All rights reserved.
 //
 
+#import <DiskArbitration/DiskArbitration.h>
 @import AppKit;
 
-@interface Arbitration : NSObject
+void InitArbitration(void);
+BOOL Validate(DADiskRef diskRef);
+void DiskAppearedCallback(DADiskRef diskRef, void *context);
+void DiskDisappearedCallback(DADiskRef diskRef, void *context);
+void DiskDescriptionChangedCallback(DADiskRef diskRef, CFArrayRef keys, void *context);
 
-@end
+/*@interface Arbitration : NSObject
+
+@end */

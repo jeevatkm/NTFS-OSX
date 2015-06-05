@@ -17,6 +17,7 @@
 		13CDB3BA1B1FF08E00A8A374 /* NTFS_OSXTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 13CDB3B91B1FF08E00A8A374 /* NTFS_OSXTests.m */; };
 		13CDB3C71B1FFA2D00A8A374 /* NTFSApp.m in Sources */ = {isa = PBXBuildFile; fileRef = 13CDB3C61B1FFA2D00A8A374 /* NTFSApp.m */; };
 		13CDB3CA1B1FFD4E00A8A374 /* ntfs_osx.png in Resources */ = {isa = PBXBuildFile; fileRef = 13CDB3C91B1FFD4E00A8A374 /* ntfs_osx.png */; };
+		9CEDC63A1B2250DD0008E929 /* Disk.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CEDC6391B2250DD0008E929 /* Disk.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -50,6 +51,8 @@
 		13CDB3C61B1FFA2D00A8A374 /* NTFSApp.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NTFSApp.m; sourceTree = "<group>"; };
 		13CDB3C81B1FFA6C00A8A374 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		13CDB3C91B1FFD4E00A8A374 /* ntfs_osx.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ntfs_osx.png; sourceTree = "<group>"; };
+		9CEDC6381B2250DD0008E929 /* Disk.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Disk.h; sourceTree = "<group>"; };
+		9CEDC6391B2250DD0008E929 /* Disk.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Disk.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -137,6 +140,8 @@
 				13824BC91B21DD0300EEE019 /* CommandLine.m */,
 				13824BCB1B21DD2F00EEE019 /* Arbitration.h */,
 				13824BCC1B21DD2F00EEE019 /* Arbitration.m */,
+				9CEDC6381B2250DD0008E929 /* Disk.h */,
+				9CEDC6391B2250DD0008E929 /* Disk.m */,
 			);
 			name = Source;
 			sourceTree = "<group>";
@@ -258,6 +263,7 @@
 				13CDB3C71B1FFA2D00A8A374 /* NTFSApp.m in Sources */,
 				13824BCA1B21DD0300EEE019 /* CommandLine.m in Sources */,
 				13CDB3A71B1FF08D00A8A374 /* AppDelegate.m in Sources */,
+				9CEDC63A1B2250DD0008E929 /* Disk.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
