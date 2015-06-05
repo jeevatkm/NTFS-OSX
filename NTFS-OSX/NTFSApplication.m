@@ -84,28 +84,19 @@
 }
 
 - (void)registerVolumesObservers {
-	NSNotificationCenter *center = [NSNotificationCenter defaultCenter]; //[[NSWorkspace sharedWorkspace] notificationCenter];
+	NSNotificationCenter *center = [[NSWorkspace sharedWorkspace] notificationCenter];
 
-	[center addObserver:self selector: @selector(volumesMountNotification:) name:NSWorkspaceDidMountNotification object: nil];
+	[center addObserver:self selector:@selector(volumesMountNotification:) name:NSWorkspaceDidMountNotification object: nil];
 
-	[center addObserver:self selector: @selector(volumesUnmountNotification:) name:NSWorkspaceDidUnmountNotification object: nil];
+	[center addObserver:self selector:@selector(volumesUnmountNotification:) name:NSWorkspaceDidUnmountNotification object: nil];
+
+	NSLog(@"Volume mount and unmount observers are registered.");
 }
 
 - (void)volumesMountNotification:(NSNotification*) notification {
-
-}
-
-- (void)volumesUnmountNotification:(NSNotification*) notification {
-
-}
-
--(void) volumesChanged: (NSNotification*) notification
-{
-	NSLog(@"Notification Name:: %@", notification.name);
-
-	NSLog(@"notification object :: %@", notification.object);
-
-	NSLog(@"notification userinfo :: %@", notification.userInfo);
+	NSLog(@"volumesMountNotification Name:: %@", notification.name);
+	NSLog(@"volumesMountNotification object:: %@", notification.object);
+	NSLog(@"volumesMountNotification userinfo:: %@", notification.userInfo);
 
 	BOOL isRemovable, isWritable, isUnmountable;
 	NSString *description, *type;
@@ -120,6 +111,18 @@
 	 type:&type];
 
 	NSLog(@"Filesystem description:%@ type:%@ removable:%d writable:%d unmountable:%d", description, type, isRemovable, isWritable, isUnmountable);
+}
+
+- (void)volumesUnmountNotification:(NSNotification*) notification {
+	NSLog(@"volumesUnmountNotification Name:: %@", notification.name);
+	NSLog(@"volumesUnmountNotification object:: %@", notification.object);
+	NSLog(@"volumesUnmountNotification userinfo:: %@", notification.userInfo);
+
+}
+
+-(void) volumesChanged: (NSNotification*) notification
+{
+
 
 	//sleep(200);
 
@@ -146,31 +149,9 @@
 
 }
 
-- (NSString *) runCommand:(NSString *) commandToRun
-{
-	NSTask *task = [[NSTask alloc] init];
-	NSPipe *pipe = [NSPipe pipe];
-	NSFileHandle *file = [pipe fileHandleForReading];
-
-	[task setLaunchPath: @"/bin/sh"];
-
-	NSArray *arguments = [NSArray arrayWithObjects: @"-c",
-	                      [NSString stringWithFormat:@"%@", commandToRun],
-	                      nil];
-	NSLog(@"run command: %@",commandToRun);
-
-	[task setArguments: arguments];
-	[task setStandardOutput: pipe];
-	[task launch];
-
-	NSData *data = [file readDataToEndOfFile];
-	NSString *output = [[NSString alloc] initWithData: data encoding: NSUTF8StringEncoding];
-
-	return output;
-}
-
 - (void)dealloc {
-	[[NSNotificationCenter defaultCenter] removeObserver: self];
+	//[[NSNotificationCenter defaultCenter] removeObserver: self];
+	[[[NSWorkspace sharedWorkspace] notificationCenter] removeObserver:self];
 }
 
 @end

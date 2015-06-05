@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		13824BC71B215C2700EEE019 /* NTFSPreferences.m in Sources */ = {isa = PBXBuildFile; fileRef = 13824BC61B215C2700EEE019 /* NTFSPreferences.m */; };
+		13824BCA1B21DD0300EEE019 /* NTFSCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = 13824BC91B21DD0300EEE019 /* NTFSCommand.m */; };
+		13824BCD1B21DD2F00EEE019 /* NTFSVolume.m in Sources */ = {isa = PBXBuildFile; fileRef = 13824BCC1B21DD2F00EEE019 /* NTFSVolume.m */; };
 		13CDB3A71B1FF08D00A8A374 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13CDB3A61B1FF08D00A8A374 /* AppDelegate.m */; };
 		13CDB3A91B1FF08D00A8A374 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13CDB3A81B1FF08D00A8A374 /* main.m */; };
 		13CDB3AB1B1FF08D00A8A374 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13CDB3AA1B1FF08D00A8A374 /* Images.xcassets */; };
@@ -30,6 +32,10 @@
 /* Begin PBXFileReference section */
 		13824BC51B215C2700EEE019 /* NTFSPreferences.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NTFSPreferences.h; sourceTree = "<group>"; };
 		13824BC61B215C2700EEE019 /* NTFSPreferences.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NTFSPreferences.m; sourceTree = "<group>"; };
+		13824BC81B21DD0300EEE019 /* NTFSCommand.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NTFSCommand.h; sourceTree = "<group>"; };
+		13824BC91B21DD0300EEE019 /* NTFSCommand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NTFSCommand.m; sourceTree = "<group>"; };
+		13824BCB1B21DD2F00EEE019 /* NTFSVolume.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NTFSVolume.h; sourceTree = "<group>"; };
+		13824BCC1B21DD2F00EEE019 /* NTFSVolume.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NTFSVolume.m; sourceTree = "<group>"; };
 		139C841F1B213703004996C3 /* NTFS_OSX_Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NTFS_OSX_Prefix.pch; sourceTree = "<group>"; };
 		13CDB3A01B1FF08D00A8A374 /* NTFS-OSX.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "NTFS-OSX.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		13CDB3A41B1FF08D00A8A374 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -129,6 +135,10 @@
 				13CDB3C61B1FFA2D00A8A374 /* NTFSApplication.m */,
 				13824BC51B215C2700EEE019 /* NTFSPreferences.h */,
 				13824BC61B215C2700EEE019 /* NTFSPreferences.m */,
+				13824BC81B21DD0300EEE019 /* NTFSCommand.h */,
+				13824BC91B21DD0300EEE019 /* NTFSCommand.m */,
+				13824BCB1B21DD2F00EEE019 /* NTFSVolume.h */,
+				13824BCC1B21DD2F00EEE019 /* NTFSVolume.m */,
 			);
 			name = Source;
 			sourceTree = "<group>";
@@ -242,9 +252,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				13824BCD1B21DD2F00EEE019 /* NTFSVolume.m in Sources */,
 				13CDB3A91B1FF08D00A8A374 /* main.m in Sources */,
 				13824BC71B215C2700EEE019 /* NTFSPreferences.m in Sources */,
 				13CDB3C71B1FFA2D00A8A374 /* NTFSApplication.m in Sources */,
+				13824BCA1B21DD0300EEE019 /* NTFSCommand.m in Sources */,
 				13CDB3A71B1FF08D00A8A374 /* AppDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
