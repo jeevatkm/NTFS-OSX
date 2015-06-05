@@ -8,8 +8,10 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface AppDelegate : NSObject <NSApplicationDelegate>
+@class NTFSApplication;
 
+@interface AppDelegate : NSObject<NSApplicationDelegate> {
+  NTFSApplication *app;
+}
 
 @end
-

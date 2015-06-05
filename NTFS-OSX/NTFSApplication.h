@@ -7,9 +7,13 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <Cocoa/Cocoa.h>
 
-@interface NTFSApplication : NSObject
+@interface NTFSApplication : NSObject {
+}
 
+@property(strong, nonatomic) NSStatusItem *statusItem;
 
+- (void)initNtfsApp;
 
 @end

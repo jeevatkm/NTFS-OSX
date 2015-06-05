@@ -27,10 +27,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		139C841F1B213703004996C3 /* NTFS_OSX_Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NTFS_OSX_Prefix.pch; sourceTree = "<group>"; };
 		13CDB3A01B1FF08D00A8A374 /* NTFS-OSX.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "NTFS-OSX.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		13CDB3A41B1FF08D00A8A374 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		13CDB3A51B1FF08D00A8A374 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
-		13CDB3A61B1FF08D00A8A374 /* AppDelegate.m */ = {isa = PBXFileReference; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; usesTabs = 0; };
+		13CDB3A61B1FF08D00A8A374 /* AppDelegate.m */ = {isa = PBXFileReference; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; usesTabs = 0; };
 		13CDB3A81B1FF08D00A8A374 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		13CDB3AA1B1FF08D00A8A374 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		13CDB3B31B1FF08E00A8A374 /* NTFS-OSXTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "NTFS-OSXTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -81,6 +82,7 @@
 		13CDB3A21B1FF08D00A8A374 /* NTFS-OSX */ = {
 			isa = PBXGroup;
 			children = (
+				13CDB3C91B1FFD4E00A8A374 /* ntfs_osx.png */,
 				13CDB3C41B1FF8F000A8A374 /* Resources */,
 				13CDB3C31B1FF88100A8A374 /* Source */,
 				13CDB3A31B1FF08D00A8A374 /* Supporting Files */,
@@ -93,6 +95,7 @@
 			children = (
 				13CDB3A41B1FF08D00A8A374 /* Info.plist */,
 				13CDB3A81B1FF08D00A8A374 /* main.m */,
+				139C841F1B213703004996C3 /* NTFS_OSX_Prefix.pch */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -128,7 +131,6 @@
 		13CDB3C41B1FF8F000A8A374 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				13CDB3C91B1FFD4E00A8A374 /* ntfs_osx.png */,
 				13CDB3AA1B1FF08D00A8A374 /* Images.xcassets */,
 				13CDB3AC1B1FF08D00A8A374 /* MainMenu.xib */,
 			);
@@ -296,6 +298,8 @@
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PREFIX_HEADER = "";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -338,6 +342,8 @@
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PREFIX_HEADER = "";
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
