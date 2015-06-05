@@ -16,26 +16,49 @@
 	// Initializing Status Bar and Menus
 	[self initStatusBar];
 
-
 }
 
-#pragma mark - NTFSApplication private methods
+
+#pragma mark - Status Menu Methods
+
+- (void)prefMenuClicked:(id)sender {
+	NSLog(@"prefMenuClicked: %@", sender);
+}
+
+- (void)donateMenuClicked:(id)sender {
+	NSLog(@"donateMenuClicked: %@", sender);
+}
+
+- (void)supportMenuClicked:(id)sender {
+	NSLog(@"supportMenuClicked: %@", sender);
+}
+
+- (void)quitMenuClicked:(id)sender {
+	[[NSApplication sharedApplication] terminate:self];
+}
+
+
+#pragma mark - Private Methods
 
 - (void)initStatusBar {
 	NSMenu *statusMenu = [[NSMenu alloc] init];
 
 	NSMenuItem *prefMenuItem = [[NSMenuItem alloc] initWithTitle:@"Preferences"
-	                            action:NULL
+	                            action:@selector(prefMenuClicked:)
 	                            keyEquivalent:@""];
 	NSMenuItem *donateMenuItem = [[NSMenuItem alloc] initWithTitle:@"Donate"
-	                              action:NULL
+	                              action:@selector(donateMenuClicked:)
 	                              keyEquivalent:@""];
 	NSMenuItem *supportMenuItem = [[NSMenuItem alloc] initWithTitle:@"Support"
-	                               action:NULL
+	                               action:@selector(supportMenuClicked:)
 	                               keyEquivalent:@""];
 	NSMenuItem *quitMenuIteam = [[NSMenuItem alloc] initWithTitle:@"Quit"
-	                             action:NULL
+	                             action:@selector(quitMenuClicked:)
 	                             keyEquivalent:@""];
+	prefMenuItem.target = self;
+	donateMenuItem.target = self;
+	supportMenuItem.target = self;
+	quitMenuIteam.target = self;
 
 	[statusMenu addItem:[NSMenuItem separatorItem]];
 	[statusMenu addItem:prefMenuItem];
@@ -46,13 +69,12 @@
 	[statusMenu addItem:quitMenuIteam];
 
 	statusItem = [[NSStatusBar systemStatusBar] statusItemWithLength:NSSquareStatusItemLength];
-
-	[self.statusItem setImage:[NSImage imageNamed:@"ntfs_osx.png"]];
-	[self.statusItem.image setTemplate:YES];
-	[self.statusItem setHighlightMode:YES];
-	[self.statusItem setMenu:statusMenu];
-	[self.statusItem setToolTip:@"Enable native way of NTFS Read and Write on Mac OSX"];
+	statusItem.highlightMode = YES;
+	statusItem.image = [NSImage imageNamed:@"ntfs_osx.png"];
+	statusItem.toolTip = @"Enable native way of NTFS Read and Write on Mac OSX";
+	statusItem.menu = statusMenu;
+	statusItem.title = @"";
+	[statusItem.image setTemplate:YES];
 }
-
 
 @end

@@ -6,8 +6,7 @@
 //  Copyright (c) 2015 myjeeva.com. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-#import <Cocoa/Cocoa.h>
+@import AppKit;
 
 @interface NTFSApplication : NSObject {
 }

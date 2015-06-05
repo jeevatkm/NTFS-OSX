@@ -6,12 +6,12 @@
 //  Copyright (c) 2015 myjeeva.com. All rights reserved.
 //
 
-#import <Cocoa/Cocoa.h>
+@import AppKit;
 
 @class NTFSApplication;
 
 @interface AppDelegate : NSObject<NSApplicationDelegate> {
-  NTFSApplication *app;
+	NTFSApplication *app;
 }
 
 @end

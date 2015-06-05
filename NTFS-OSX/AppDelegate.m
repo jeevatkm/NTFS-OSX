@@ -21,11 +21,11 @@
 	app = [[NTFSApplication alloc] init];
 	[app initNtfsApp];
 
-	NSLog(@"NTFS-OSX is loaded successfully.");
+	NSLog(@"NTFS OSX is loaded successfully.");
 }
 
 - (void)applicationWillTerminate:(NSNotification *)aNotification {
-	NSLog(@"NTFS-OSX is unloaded successfully.");
+	NSLog(@"NTFS OSX app will terminate.");
 }
 
 @end
