@@ -16,6 +16,10 @@
 	// Initializing Status Bar and Menus
 	[self initStatusBar];
 
+	[self registerVolumesObservers];
+
+
+
 	//[[NSUserDefaults standardUserDefaults] setObject:@"For Test" forKey:@"NTFSTestPref"];
 
 }
@@ -77,6 +81,96 @@
 	statusItem.menu = statusMenu;
 	statusItem.title = @"";
 	[statusItem.image setTemplate:YES];
+}
+
+- (void)registerVolumesObservers {
+	NSNotificationCenter *center = [NSNotificationCenter defaultCenter]; //[[NSWorkspace sharedWorkspace] notificationCenter];
+
+	[center addObserver:self selector: @selector(volumesMountNotification:) name:NSWorkspaceDidMountNotification object: nil];
+
+	[center addObserver:self selector: @selector(volumesUnmountNotification:) name:NSWorkspaceDidUnmountNotification object: nil];
+}
+
+- (void)volumesMountNotification:(NSNotification*) notification {
+
+}
+
+- (void)volumesUnmountNotification:(NSNotification*) notification {
+
+}
+
+-(void) volumesChanged: (NSNotification*) notification
+{
+	NSLog(@"Notification Name:: %@", notification.name);
+
+	NSLog(@"notification object :: %@", notification.object);
+
+	NSLog(@"notification userinfo :: %@", notification.userInfo);
+
+	BOOL isRemovable, isWritable, isUnmountable;
+	NSString *description, *type;
+
+	NSString *volUrl = [notification.userInfo objectForKey:NSWorkspaceVolumeURLKey];
+
+	[[NSWorkspace sharedWorkspace] getFileSystemInfoForPath:volUrl
+	 isRemovable:&isRemovable
+	 isWritable:&isWritable
+	 isUnmountable:&isUnmountable
+	 description:&description
+	 type:&type];
+
+	NSLog(@"Filesystem description:%@ type:%@ removable:%d writable:%d unmountable:%d", description, type, isRemovable, isWritable, isUnmountable);
+
+	//sleep(200);
+
+	/* NSError * __autoreleasing error = nil;
+
+	   BOOL result = [[NSWorkspace sharedWorkspace] unmountAndEjectDeviceAtURL:
+	   [NSURL fileURLWithPath:[notification.userInfo objectForKey:@"NSDevicePath"]]
+	   error:&error];
+
+	   NSLog(@"Unmount result %hhd", result); */
+
+	/*NSString *cmd = [NSString stringWithFormat:@"diskutil list | grep \"%@\"", [notification.userInfo objectForKey:NSWorkspaceVolumeLocalizedNameKey]];
+	   NSString *output = [self runCommand: cmd];
+
+	   NSLog(@"Command output: %@", output);
+
+	   NSArray *wordsAndEmptyStrings = [output componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+
+	   NSLog(@"wordsAndEmptyStrings output: %@", wordsAndEmptyStrings);
+
+	   NSArray *words = [wordsAndEmptyStrings filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"length > 0"]];
+
+	   NSLog(@"words output: %@", words); */
+
+}
+
+- (NSString *) runCommand:(NSString *) commandToRun
+{
+	NSTask *task = [[NSTask alloc] init];
+	NSPipe *pipe = [NSPipe pipe];
+	NSFileHandle *file = [pipe fileHandleForReading];
+
+	[task setLaunchPath: @"/bin/sh"];
+
+	NSArray *arguments = [NSArray arrayWithObjects: @"-c",
+	                      [NSString stringWithFormat:@"%@", commandToRun],
+	                      nil];
+	NSLog(@"run command: %@",commandToRun);
+
+	[task setArguments: arguments];
+	[task setStandardOutput: pipe];
+	[task launch];
+
+	NSData *data = [file readDataToEndOfFile];
+	NSString *output = [[NSString alloc] initWithData: data encoding: NSUTF8StringEncoding];
+
+	return output;
+}
+
+- (void)dealloc {
+	[[NSNotificationCenter defaultCenter] removeObserver: self];
 }
 
 @end
