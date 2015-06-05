@@ -16,6 +16,8 @@
 	// Initializing Status Bar and Menus
 	[self initStatusBar];
 
+	//[[NSUserDefaults standardUserDefaults] setObject:@"For Test" forKey:@"NTFSTestPref"];
+
 }
 
 
