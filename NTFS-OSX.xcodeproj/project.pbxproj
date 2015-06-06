@@ -17,7 +17,7 @@
 		13CDB3BA1B1FF08E00A8A374 /* NTFS_OSXTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 13CDB3B91B1FF08E00A8A374 /* NTFS_OSXTests.m */; };
 		13CDB3C71B1FFA2D00A8A374 /* NTFSApp.m in Sources */ = {isa = PBXBuildFile; fileRef = 13CDB3C61B1FFA2D00A8A374 /* NTFSApp.m */; };
 		13CDB3CA1B1FFD4E00A8A374 /* ntfs_osx.png in Resources */ = {isa = PBXBuildFile; fileRef = 13CDB3C91B1FFD4E00A8A374 /* ntfs_osx.png */; };
-		9CEDC63A1B2250DD0008E929 /* Disk.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CEDC6391B2250DD0008E929 /* Disk.m */; };
+		9CEDC63A1B2250DD0008E929 /* Volume.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CEDC6391B2250DD0008E929 /* Volume.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -37,8 +37,8 @@
 		13824BC91B21DD0300EEE019 /* CommandLine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommandLine.m; sourceTree = "<group>"; };
 		13824BCB1B21DD2F00EEE019 /* Arbitration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Arbitration.h; sourceTree = "<group>"; };
 		13824BCC1B21DD2F00EEE019 /* Arbitration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Arbitration.m; sourceTree = "<group>"; };
-		139C841F1B213703004996C3 /* NTFS_OSX_Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NTFS_OSX_Prefix.pch; sourceTree = "<group>"; };
-		13CDB3A01B1FF08D00A8A374 /* NTFS-OSX.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "NTFS-OSX.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		13904C5C1B22A5430055253A /* NTFS-OSX-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NTFS-OSX-Prefix.pch"; sourceTree = "<group>"; };
+		13CDB3A01B1FF08D00A8A374 /* NTFS OS X.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "NTFS OS X.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		13CDB3A41B1FF08D00A8A374 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		13CDB3A51B1FF08D00A8A374 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		13CDB3A61B1FF08D00A8A374 /* AppDelegate.m */ = {isa = PBXFileReference; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; usesTabs = 0; };
@@ -51,8 +51,8 @@
 		13CDB3C61B1FFA2D00A8A374 /* NTFSApp.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NTFSApp.m; sourceTree = "<group>"; };
 		13CDB3C81B1FFA6C00A8A374 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		13CDB3C91B1FFD4E00A8A374 /* ntfs_osx.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ntfs_osx.png; sourceTree = "<group>"; };
-		9CEDC6381B2250DD0008E929 /* Disk.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Disk.h; sourceTree = "<group>"; };
-		9CEDC6391B2250DD0008E929 /* Disk.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Disk.m; sourceTree = "<group>"; };
+		9CEDC6381B2250DD0008E929 /* Volume.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Volume.h; sourceTree = "<group>"; };
+		9CEDC6391B2250DD0008E929 /* Volume.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Volume.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -85,7 +85,7 @@
 		13CDB3A11B1FF08D00A8A374 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				13CDB3A01B1FF08D00A8A374 /* NTFS-OSX.app */,
+				13CDB3A01B1FF08D00A8A374 /* NTFS OS X.app */,
 				13CDB3B31B1FF08E00A8A374 /* NTFS-OSXTests.xctest */,
 			);
 			name = Products;
@@ -104,8 +104,8 @@
 		13CDB3A31B1FF08D00A8A374 /* Other Sources */ = {
 			isa = PBXGroup;
 			children = (
+				13904C5C1B22A5430055253A /* NTFS-OSX-Prefix.pch */,
 				13CDB3A81B1FF08D00A8A374 /* main.m */,
-				139C841F1B213703004996C3 /* NTFS_OSX_Prefix.pch */,
 			);
 			name = "Other Sources";
 			sourceTree = "<group>";
@@ -140,8 +140,8 @@
 				13824BC91B21DD0300EEE019 /* CommandLine.m */,
 				13824BCB1B21DD2F00EEE019 /* Arbitration.h */,
 				13824BCC1B21DD2F00EEE019 /* Arbitration.m */,
-				9CEDC6381B2250DD0008E929 /* Disk.h */,
-				9CEDC6391B2250DD0008E929 /* Disk.m */,
+				9CEDC6381B2250DD0008E929 /* Volume.h */,
+				9CEDC6391B2250DD0008E929 /* Volume.m */,
 			);
 			name = Source;
 			sourceTree = "<group>";
@@ -174,7 +174,7 @@
 			);
 			name = "NTFS-OSX";
 			productName = "NTFS-OSX";
-			productReference = 13CDB3A01B1FF08D00A8A374 /* NTFS-OSX.app */;
+			productReference = 13CDB3A01B1FF08D00A8A374 /* NTFS OS X.app */;
 			productType = "com.apple.product-type.application";
 		};
 		13CDB3B21B1FF08E00A8A374 /* NTFS-OSXTests */ = {
@@ -263,7 +263,7 @@
 				13CDB3C71B1FFA2D00A8A374 /* NTFSApp.m in Sources */,
 				13824BCA1B21DD0300EEE019 /* CommandLine.m in Sources */,
 				13CDB3A71B1FF08D00A8A374 /* AppDelegate.m in Sources */,
-				9CEDC63A1B2250DD0008E929 /* Disk.m in Sources */,
+				9CEDC63A1B2250DD0008E929 /* Volume.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -322,8 +322,8 @@
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PRECOMPILE_PREFIX_HEADER = NO;
-				GCC_PREFIX_HEADER = "";
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "NTFS-OSX/NTFS-OSX-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -366,8 +366,8 @@
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_PRECOMPILE_PREFIX_HEADER = NO;
-				GCC_PREFIX_HEADER = "";
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "NTFS-OSX/NTFS-OSX-Prefix.pch";
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
@@ -388,7 +388,7 @@
 				INFOPLIST_FILE = "NTFS-OSX/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "NTFS OS X";
 			};
 			name = Debug;
 		};
@@ -400,7 +400,7 @@
 				INFOPLIST_FILE = "NTFS-OSX/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "NTFS OS X";
 			};
 			name = Release;
 		};

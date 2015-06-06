@@ -14,24 +14,24 @@
 @synthesize statusItem;
 
 - (id)init {
-    self = [super init];
-    
-    if (self) {
-        // Initializing Status Bar and Menus
-        [self initStatusBar];
-        
-        InitArbitration();
-        
-        //[self registerVolumesObservers];
-    }
-    
-    return self;
+	self = [super init];
+
+	if (self) {
+		// Initializing Status Bar and Menus
+		[self initStatusBar];
+
+		InitArbitration();
+
+		[self registerVolumesObservers];
+	}
+
+	return self;
 }
 
 - (void)dealloc {
-    
-    //[[[NSWorkspace sharedWorkspace] notificationCenter] removeObserver:self];
-   
+
+	[[[NSWorkspace sharedWorkspace] notificationCenter] removeObserver:self];
+
 }
 
 
@@ -76,7 +76,7 @@
 	supportMenuItem.target = self;
 	quitMenuIteam.target = self;
 
-	[statusMenu addItem:[NSMenuItem separatorItem]];
+	//[statusMenu addItem:[NSMenuItem separatorItem]];
 	[statusMenu addItem:prefMenuItem];
 	[statusMenu addItem:[NSMenuItem separatorItem]];
 	[statusMenu addItem:donateMenuItem];

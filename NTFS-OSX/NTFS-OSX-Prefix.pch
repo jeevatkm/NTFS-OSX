@@ -1,5 +1,5 @@
 //
-//  NTFS_OSX_Prefix.pch
+//  NTFS-OSX-Prefix.pch
 //  NTFS-OSX
 //
 //  Created by Jeevanandam Madanagopal on 6/4/15.
@@ -10,14 +10,16 @@
 // Prefix header for all source files of the 'NTFS-OSX' in the project
 //
 
-#ifndef NTFS_OSX_Prefix_pch
+/* #ifndef NTFS_OSX_Prefix_pch
 
 #define NTFS_OSX_Prefix_pch
 
-#endif
+#endif */
 
 
 #ifdef __OBJC__
-#  import <Cocoa/Cocoa.h>
-#  import <Foundation/Foundation.h>
+
+@import AppKit;
+@import Foundation;
+
 #endif

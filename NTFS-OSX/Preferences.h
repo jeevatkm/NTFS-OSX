@@ -6,7 +6,6 @@
 //  Copyright (c) 2015 myjeeva.com. All rights reserved.
 //
 
-@import AppKit;
 
 @interface Preferences : NSObject
 

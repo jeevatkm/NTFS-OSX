@@ -6,15 +6,17 @@
 //  Copyright (c) 2015 myjeeva.com. All rights reserved.
 //
 
-#import <DiskArbitration/DiskArbitration.h>
-@import AppKit;
+@import DiskArbitration;
 
 void InitArbitration(void);
 BOOL Validate(DADiskRef diskRef);
 void DiskAppearedCallback(DADiskRef diskRef, void *context);
 void DiskDisappearedCallback(DADiskRef diskRef, void *context);
-void DiskDescriptionChangedCallback(DADiskRef diskRef, CFArrayRef keys, void *context);
+DADissenterRef DiskMountApprovalCallback(DADiskRef diskRef, void *context);
+DADissenterRef DiskUnmountApprovalCallback(DADiskRef diskRef, void *context);
+
+extern NSString * const DADiskDescriptionVolumeKindKey;
 
 /*@interface Arbitration : NSObject
 
-@end */
+   @end */
