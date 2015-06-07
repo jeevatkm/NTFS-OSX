@@ -10,12 +10,6 @@
 // Prefix header for all source files of the 'NTFS-OSX' in the project
 //
 
-/* #ifndef NTFS_OSX_Prefix_pch
-
-#define NTFS_OSX_Prefix_pch
-
-#endif */
-
 
 #ifdef __OBJC__
 

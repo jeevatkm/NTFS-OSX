@@ -8,8 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		13824BC71B215C2700EEE019 /* Preferences.m in Sources */ = {isa = PBXBuildFile; fileRef = 13824BC61B215C2700EEE019 /* Preferences.m */; };
-		13824BCA1B21DD0300EEE019 /* CommandLine.m in Sources */ = {isa = PBXBuildFile; fileRef = 13824BC91B21DD0300EEE019 /* CommandLine.m */; };
 		13824BCD1B21DD2F00EEE019 /* Arbitration.m in Sources */ = {isa = PBXBuildFile; fileRef = 13824BCC1B21DD2F00EEE019 /* Arbitration.m */; };
+		13904C5F1B23F7AA0055253A /* STPrivilegedTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 13904C5E1B23F7AA0055253A /* STPrivilegedTask.m */; };
 		13CDB3A71B1FF08D00A8A374 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13CDB3A61B1FF08D00A8A374 /* AppDelegate.m */; };
 		13CDB3A91B1FF08D00A8A374 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13CDB3A81B1FF08D00A8A374 /* main.m */; };
 		13CDB3AB1B1FF08D00A8A374 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13CDB3AA1B1FF08D00A8A374 /* Images.xcassets */; };
@@ -33,11 +33,11 @@
 /* Begin PBXFileReference section */
 		13824BC51B215C2700EEE019 /* Preferences.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Preferences.h; sourceTree = "<group>"; };
 		13824BC61B215C2700EEE019 /* Preferences.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Preferences.m; sourceTree = "<group>"; };
-		13824BC81B21DD0300EEE019 /* CommandLine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommandLine.h; sourceTree = "<group>"; };
-		13824BC91B21DD0300EEE019 /* CommandLine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommandLine.m; sourceTree = "<group>"; };
 		13824BCB1B21DD2F00EEE019 /* Arbitration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Arbitration.h; sourceTree = "<group>"; };
 		13824BCC1B21DD2F00EEE019 /* Arbitration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Arbitration.m; sourceTree = "<group>"; };
 		13904C5C1B22A5430055253A /* NTFS-OSX-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NTFS-OSX-Prefix.pch"; sourceTree = "<group>"; };
+		13904C5D1B23F7AA0055253A /* STPrivilegedTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STPrivilegedTask.h; sourceTree = "<group>"; };
+		13904C5E1B23F7AA0055253A /* STPrivilegedTask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STPrivilegedTask.m; sourceTree = "<group>"; };
 		13CDB3A01B1FF08D00A8A374 /* NTFS OS X.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "NTFS OS X.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		13CDB3A41B1FF08D00A8A374 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		13CDB3A51B1FF08D00A8A374 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -73,6 +73,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		13904C611B2401830055253A /* STPrivilegedTask */ = {
+			isa = PBXGroup;
+			children = (
+				13904C5D1B23F7AA0055253A /* STPrivilegedTask.h */,
+				13904C5E1B23F7AA0055253A /* STPrivilegedTask.m */,
+			);
+			name = STPrivilegedTask;
+			sourceTree = "<group>";
+		};
 		13CDB3971B1FF08D00A8A374 = {
 			isa = PBXGroup;
 			children = (
@@ -96,7 +105,6 @@
 			children = (
 				13CDB3C41B1FF8F000A8A374 /* Resources */,
 				13CDB3C31B1FF88100A8A374 /* Source */,
-				13CDB3A31B1FF08D00A8A374 /* Other Sources */,
 			);
 			path = "NTFS-OSX";
 			sourceTree = "<group>";
@@ -104,6 +112,7 @@
 		13CDB3A31B1FF08D00A8A374 /* Other Sources */ = {
 			isa = PBXGroup;
 			children = (
+				13904C611B2401830055253A /* STPrivilegedTask */,
 				13904C5C1B22A5430055253A /* NTFS-OSX-Prefix.pch */,
 				13CDB3A81B1FF08D00A8A374 /* main.m */,
 			);
@@ -136,12 +145,11 @@
 				13CDB3C61B1FFA2D00A8A374 /* NTFSApp.m */,
 				13824BC51B215C2700EEE019 /* Preferences.h */,
 				13824BC61B215C2700EEE019 /* Preferences.m */,
-				13824BC81B21DD0300EEE019 /* CommandLine.h */,
-				13824BC91B21DD0300EEE019 /* CommandLine.m */,
 				13824BCB1B21DD2F00EEE019 /* Arbitration.h */,
 				13824BCC1B21DD2F00EEE019 /* Arbitration.m */,
 				9CEDC6381B2250DD0008E929 /* Disk.h */,
 				9CEDC6391B2250DD0008E929 /* Disk.m */,
+				13CDB3A31B1FF08D00A8A374 /* Other Sources */,
 			);
 			name = Source;
 			sourceTree = "<group>";
@@ -259,9 +267,9 @@
 			files = (
 				13824BCD1B21DD2F00EEE019 /* Arbitration.m in Sources */,
 				13CDB3A91B1FF08D00A8A374 /* main.m in Sources */,
+				13904C5F1B23F7AA0055253A /* STPrivilegedTask.m in Sources */,
 				13824BC71B215C2700EEE019 /* Preferences.m in Sources */,
 				13CDB3C71B1FFA2D00A8A374 /* NTFSApp.m in Sources */,
-				13824BCA1B21DD0300EEE019 /* CommandLine.m in Sources */,
 				13CDB3A71B1FF08D00A8A374 /* AppDelegate.m in Sources */,
 				9CEDC63A1B2250DD0008E929 /* Disk.m in Sources */,
 			);

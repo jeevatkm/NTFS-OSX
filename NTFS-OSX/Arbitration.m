@@ -8,6 +8,7 @@
 
 #import "Arbitration.h"
 #import "Disk.h"
+#import "STPrivilegedTask.h"
 
 DASessionRef session;
 DASessionRef approvalSession;
@@ -125,6 +126,15 @@ DADissenterRef DiskMountApprovalCallback(DADiskRef diskRef, void *context) {
 
 		Disk *disk = [[Disk alloc] initWithDADiskRef:diskRef];
 		[disk logInfo];
+
+		NSString *cmd = [NSString stringWithFormat:@"echo \"UUID=%@ none ntfs rw,auto,nobrowse\" | tee -a /etc/fstab", [disk volumeUUID]];
+
+		NSLog(@"%@", cmd);
+
+		STPrivilegedTask *task = [[STPrivilegedTask alloc] initWithLaunchPath:@"/bin/sh"];
+		[task setArguments:[NSArray arrayWithObjects: @"-c", [NSString stringWithFormat:@"%@", cmd], nil]];
+		[task launch];
+		[task waitUntilExit];
 	}
 
 	return NULL;
