@@ -7,21 +7,21 @@
 //
 
 
-@interface Volume : NSObject {
-	CFTypeRef volume;
-	NSString *_BSDName;
-	CFDictionaryRef description;
+@interface Disk : NSObject {
+	CFTypeRef _diskRef;
 }
 
-@property (copy) NSString *BSDName;
-@property CFDictionaryRef description;
-@property (readonly) BOOL isNTFSWritable;
-@property (readonly) BOOL isMounted;
-@property (readonly) BOOL isNetworkVolume;
+@property (readonly, copy) NSString *BSDName;
+@property (readonly, copy) NSString *volumeUUID;
+@property (readonly, copy) NSString *volumeName;
+@property (nonatomic, copy) NSURL *volumeURL;
+@property (nonatomic, copy) NSString *volumePath;
+@property (nonatomic) BOOL isNTFSWritable;
+@property (nonatomic) BOOL isMounted;
 
-- (void)mount;
-- (void)mountWithOptions:(NSUInteger)options;
-- (void)unmountWithOptions:(NSUInteger)options;
-- (void)eject;
++ (Disk *)getDiskForDARef:(DADiskRef)diskRef;
+- (id)initWithDADiskRef:(DADiskRef)diskRef;
+- (void)logInfo;
+- (void)disappeared;
 
 @end

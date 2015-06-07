@@ -20,18 +20,15 @@
 		// Initializing Status Bar and Menus
 		[self initStatusBar];
 
-		InitArbitration();
-
-		[self registerVolumesObservers];
+		// Disk Arbitration
+		RegisterDA();
 	}
 
 	return self;
 }
 
 - (void)dealloc {
-
-	[[[NSWorkspace sharedWorkspace] notificationCenter] removeObserver:self];
-
+	UnregisterDA();
 }
 
 
@@ -91,72 +88,6 @@
 	statusItem.menu = statusMenu;
 	statusItem.title = @"";
 	[statusItem.image setTemplate:YES];
-}
-
-- (void)registerVolumesObservers {
-	NSNotificationCenter *center = [[NSWorkspace sharedWorkspace] notificationCenter];
-
-	[center addObserver:self selector:@selector(volumesMountNotification:) name:NSWorkspaceDidMountNotification object: nil];
-
-	[center addObserver:self selector:@selector(volumesUnmountNotification:) name:NSWorkspaceDidUnmountNotification object: nil];
-
-	NSLog(@"Volume mount and unmount observers are registered.");
-}
-
-- (void)volumesMountNotification:(NSNotification*) notification {
-	NSLog(@"volumesMountNotification Name:: %@", notification.name);
-	NSLog(@"volumesMountNotification object:: %@", notification.object);
-	NSLog(@"volumesMountNotification userinfo:: %@", notification.userInfo);
-
-	BOOL isRemovable, isWritable, isUnmountable;
-	NSString *description, *type;
-
-	NSString *volUrl = [notification.userInfo objectForKey:NSWorkspaceVolumeURLKey];
-
-	[[NSWorkspace sharedWorkspace] getFileSystemInfoForPath:volUrl
-	 isRemovable:&isRemovable
-	 isWritable:&isWritable
-	 isUnmountable:&isUnmountable
-	 description:&description
-	 type:&type];
-
-	NSLog(@"Filesystem description:%@ type:%@ removable:%d writable:%d unmountable:%d", description, type, isRemovable, isWritable, isUnmountable);
-}
-
-- (void)volumesUnmountNotification:(NSNotification*) notification {
-	NSLog(@"volumesUnmountNotification Name:: %@", notification.name);
-	NSLog(@"volumesUnmountNotification object:: %@", notification.object);
-	NSLog(@"volumesUnmountNotification userinfo:: %@", notification.userInfo);
-
-}
-
--(void) volumesChanged: (NSNotification*) notification
-{
-
-
-	//sleep(200);
-
-	/* NSError * __autoreleasing error = nil;
-
-	   BOOL result = [[NSWorkspace sharedWorkspace] unmountAndEjectDeviceAtURL:
-	   [NSURL fileURLWithPath:[notification.userInfo objectForKey:@"NSDevicePath"]]
-	   error:&error];
-
-	   NSLog(@"Unmount result %hhd", result); */
-
-	/*NSString *cmd = [NSString stringWithFormat:@"diskutil list | grep \"%@\"", [notification.userInfo objectForKey:NSWorkspaceVolumeLocalizedNameKey]];
-	   NSString *output = [self runCommand: cmd];
-
-	   NSLog(@"Command output: %@", output);
-
-	   NSArray *wordsAndEmptyStrings = [output componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-
-	   NSLog(@"wordsAndEmptyStrings output: %@", wordsAndEmptyStrings);
-
-	   NSArray *words = [wordsAndEmptyStrings filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"length > 0"]];
-
-	   NSLog(@"words output: %@", words); */
-
 }
 
 @end

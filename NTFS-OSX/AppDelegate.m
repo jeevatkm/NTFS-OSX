@@ -18,14 +18,15 @@
 @implementation AppDelegate
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
-    
-    app = [NTFSApp new];
-    
-	NSLog(@"NTFS OSX is loaded successfully.");
+	NSLog(@"Loading...");
+
+	app = [NTFSApp new];
+
+	NSLog(@"Loaded successfully.");
 }
 
 - (void)applicationWillTerminate:(NSNotification *)aNotification {
-	NSLog(@"NTFS OSX app will terminate.");
+	NSLog(@"App will terminate.");
 }
 
 @end

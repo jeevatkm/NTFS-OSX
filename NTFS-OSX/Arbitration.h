@@ -8,15 +8,16 @@
 
 @import DiskArbitration;
 
-void InitArbitration(void);
+void RegisterDA(void);
+void UnregisterDA(void);
 BOOL Validate(DADiskRef diskRef);
 void DiskAppearedCallback(DADiskRef diskRef, void *context);
 void DiskDisappearedCallback(DADiskRef diskRef, void *context);
 DADissenterRef DiskMountApprovalCallback(DADiskRef diskRef, void *context);
 DADissenterRef DiskUnmountApprovalCallback(DADiskRef diskRef, void *context);
 
-extern NSString * const DADiskDescriptionVolumeKindKey;
+extern NSString * const DADiskDescriptionVolumeKindValue;
+extern NSString * const AppName;
 
-/*@interface Arbitration : NSObject
+extern NSMutableSet *ntfsDisks;
 
-   @end */

@@ -7,29 +7,29 @@
 //
 
 #import "Arbitration.h"
-#import "Volume.h"
+#import "Disk.h"
 
 DASessionRef session;
+DASessionRef approvalSession;
+NSMutableSet *ntfsDisks;
 
-NSString * const DADiskDescriptionVolumeKindKey = @"ntfs";
+NSString * const DADiskDescriptionVolumeKindValue = @"ntfs";
+NSString * const AppName = @"NTFSApp";
 
-void InitArbitration(void) {
-	static BOOL isInitialized = NO;
+void RegisterDA(void) {
 
-	if (isInitialized) {
-		return;
-	}
-
-	isInitialized = YES;
-
+	// Disk Arbitration Session
 	session = DASessionCreate(kCFAllocatorDefault);
 	if (!session) {
 		[NSException raise:NSGenericException format:@"Unable to create Disk Arbitration session."];
 		return;
 	}
 
-	DASessionScheduleWithRunLoop(session, CFRunLoopGetMain(), kCFRunLoopCommonModes);
+	NSLog(@"Disk Arbitration Session created");
 
+	ntfsDisks = [NSMutableSet new];
+
+	// Matching Conditions
 	CFMutableDictionaryRef match = CFDictionaryCreateMutable(kCFAllocatorDefault, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
 
 	// Device matching criteria
@@ -38,19 +38,59 @@ void InitArbitration(void) {
 
 	// Volume matching criteria
 	// It should statisfy following
-	CFDictionaryAddValue(match, kDADiskDescriptionVolumeKindKey, (__bridge CFStringRef)DADiskDescriptionVolumeKindKey);
+	CFDictionaryAddValue(match, kDADiskDescriptionVolumeKindKey, (__bridge CFStringRef)DADiskDescriptionVolumeKindValue);
 	CFDictionaryAddValue(match, kDADiskDescriptionVolumeMountableKey, kCFBooleanTrue);
 	CFDictionaryAddValue(match, kDADiskDescriptionVolumeNetworkKey, kCFBooleanFalse);
 
 	//CFDictionaryAddValue(match, kDADiskDescriptionDeviceProtocolKey, CFSTR(kIOPropertyPhysicalInterconnectTypeUSB));
 
+	DASessionScheduleWithRunLoop(session, CFRunLoopGetMain(), kCFRunLoopCommonModes);
+
 	// Registring callbacks
-	DARegisterDiskAppearedCallback(session, match, DiskAppearedCallback, (__bridge void *)[Volume class]);
-	DARegisterDiskDisappearedCallback(session, match, DiskDisappearedCallback, (__bridge void *)[Volume class]);
-	DARegisterDiskMountApprovalCallback(session, match, DiskMountApprovalCallback, (__bridge void *)[Volume class]);
-	DARegisterDiskUnmountApprovalCallback(session, match, DiskUnmountApprovalCallback, (__bridge void *)[Volume class]);
+	DARegisterDiskAppearedCallback(session, match, DiskAppearedCallback, (__bridge void *)AppName);
+	DARegisterDiskDisappearedCallback(session, match, DiskDisappearedCallback, (__bridge void *)AppName);
+
+
+	// Disk Arbitration Approval Session
+	approvalSession = DAApprovalSessionCreate(kCFAllocatorDefault);
+	if (!approvalSession) {
+		NSLog(@"Unable to create Disk Arbitration approval session.");
+		return;
+	}
+
+	NSLog(@"Disk Arbitration Approval Session created");
+	DAApprovalSessionScheduleWithRunLoop(approvalSession, CFRunLoopGetMain(), kCFRunLoopCommonModes);
+
+	// Same match condition for Approval session too
+	DARegisterDiskMountApprovalCallback(approvalSession, match, DiskMountApprovalCallback, (__bridge void *)AppName);
 
 	CFRelease(match);
+}
+
+void UnregisterDA(void) {
+	// DA Session
+	if (session) {
+		DAUnregisterCallback(session, DiskAppearedCallback, (__bridge void *)AppName);
+		DAUnregisterCallback(session, DiskDisappearedCallback, (__bridge void *)AppName);
+
+		DASessionUnscheduleFromRunLoop(session, CFRunLoopGetMain(), kCFRunLoopCommonModes);
+		CFRelease(session);
+
+		NSLog(@"Disk Arbitration Session destoryed");
+	}
+
+	// DA Approval Session
+	if (approvalSession) {
+		DAUnregisterApprovalCallback(approvalSession, DiskMountApprovalCallback, (__bridge void *)AppName);
+
+		DAApprovalSessionUnscheduleFromRunLoop(approvalSession, CFRunLoopGetMain(), kCFRunLoopCommonModes);
+		CFRelease(approvalSession);
+
+		NSLog(@"Disk Arbitration Approval Session destoryed");
+	}
+
+	[ntfsDisks removeAllObjects];
+	ntfsDisks = nil;
 }
 
 BOOL Validate(DADiskRef diskRef) {
@@ -61,71 +101,31 @@ BOOL Validate(DADiskRef diskRef) {
 void DiskAppearedCallback(DADiskRef diskRef, void *context) {
 	NSLog(@"-- DiskAppearedCallback ---");
 
-	if (context != (__bridge void *)[Volume class]) {
-		return;
+	if (context == (__bridge void *)AppName) {
+		Disk *disk = [[Disk alloc] initWithDADiskRef:diskRef];
+		[disk logInfo];
 	}
-
-	NSString *BSDName = [[NSString alloc] initWithUTF8String:DADiskGetBSDName(diskRef)];
-	CFDictionaryRef description = DADiskCopyDescription(diskRef);
-
-	NSDictionary *dict = (__bridge NSDictionary *)description;
-	NSLog(@"BSD Name:: %@ \n Description:: %@", BSDName, dict);
-
-	CFRelease(description);
 }
 
 void DiskDisappearedCallback(DADiskRef diskRef, void *context) {
 	NSLog(@"-- DiskDisappearedCallback ---");
 
-	if (context != (__bridge void *)[Volume class]) {
-		return;
+	if (context == (__bridge void *)AppName) {
+		Disk *disk = [Disk getDiskForDARef:diskRef];
+
+		[disk logInfo];
+		[disk disappeared];
 	}
-
-	NSString *BSDName = [[NSString alloc] initWithUTF8String:DADiskGetBSDName(diskRef)];
-	CFDictionaryRef description = DADiskCopyDescription(diskRef);
-
-	NSDictionary *dict = (__bridge NSDictionary *)description;
-	NSLog(@"BSD Name:: %@ \n Description:: %@", BSDName, dict);
-
-	CFRelease(description);
 }
 
 DADissenterRef DiskMountApprovalCallback(DADiskRef diskRef, void *context) {
 	NSLog(@"-- DiskMountApprovalCallback ---");
 
-	/*if (context != (__bridge void *)[Volume class]) {
-	   return;
-	   } */
+	if (context == (__bridge void *)AppName) {
 
-	NSString *BSDName = [[NSString alloc] initWithUTF8String:DADiskGetBSDName(diskRef)];
-	CFDictionaryRef description = DADiskCopyDescription(diskRef);
-
-	NSDictionary *dict = (__bridge NSDictionary *)description;
-	NSLog(@"BSD Name:: %@ \n Description:: %@", BSDName, dict);
-
-	CFRelease(description);
+		Disk *disk = [[Disk alloc] initWithDADiskRef:diskRef];
+		[disk logInfo];
+	}
 
 	return NULL;
 }
-
-DADissenterRef DiskUnmountApprovalCallback(DADiskRef diskRef, void *context) {
-	NSLog(@"-- DiskUnmountApprovalCallback ---");
-
-	/*if (context != (__bridge void *)[Volume class]) {
-	        return;
-	   }*/
-
-	NSString *BSDName = [[NSString alloc] initWithUTF8String:DADiskGetBSDName(diskRef)];
-	CFDictionaryRef description = DADiskCopyDescription(diskRef);
-
-	NSDictionary *dict = (__bridge NSDictionary *)description;
-	NSLog(@"BSD Name:: %@ \n Description:: %@", BSDName, dict);
-
-	CFRelease(description);
-
-	//DADissenterRef ref = DADissenterCreate(kCFAllocatorDefault, kDAReturnNotPermitted, NULL);
-	//return ref;
-
-	return NULL;
-}
-
