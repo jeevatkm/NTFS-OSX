@@ -8,13 +8,14 @@
 
 #import "Arbitration.h"
 #import "Disk.h"
-#import "STPrivilegedTask.h"
 
 DASessionRef session;
 DASessionRef approvalSession;
 NSMutableSet *ntfsDisks;
 
 NSString * const DADiskDescriptionVolumeKindValue = @"ntfs";
+NSString * const NTFSDiskAppearedNotification = @"NTFSDiskAppearedNotification";
+NSString * const NTFSDiskDisappearedNotification = @"NTFSDiskDisappearedNotification";
 NSString * const AppName = @"NTFSApp";
 
 void RegisterDA(void) {
@@ -50,20 +51,20 @@ void RegisterDA(void) {
 	// Registring callbacks
 	DARegisterDiskAppearedCallback(session, match, DiskAppearedCallback, (__bridge void *)AppName);
 	DARegisterDiskDisappearedCallback(session, match, DiskDisappearedCallback, (__bridge void *)AppName);
-
+	DARegisterDiskDescriptionChangedCallback(session, match, NULL, DiskDescriptionChangedCallback, (__bridge void *)AppName);
 
 	// Disk Arbitration Approval Session
-	approvalSession = DAApprovalSessionCreate(kCFAllocatorDefault);
-	if (!approvalSession) {
-		NSLog(@"Unable to create Disk Arbitration approval session.");
-		return;
-	}
+	/*approvalSession = DAApprovalSessionCreate(kCFAllocatorDefault);
+	   if (!approvalSession) {
+	        NSLog(@"Unable to create Disk Arbitration approval session.");
+	        return;
+	   }
 
-	NSLog(@"Disk Arbitration Approval Session created");
-	DAApprovalSessionScheduleWithRunLoop(approvalSession, CFRunLoopGetMain(), kCFRunLoopCommonModes);
+	   NSLog(@"Disk Arbitration Approval Session created");
+	   DAApprovalSessionScheduleWithRunLoop(approvalSession, CFRunLoopGetMain(), kCFRunLoopCommonModes);
 
-	// Same match condition for Approval session too
-	DARegisterDiskMountApprovalCallback(approvalSession, match, DiskMountApprovalCallback, (__bridge void *)AppName);
+	   // Same match condition for Approval session too
+	   DARegisterDiskMountApprovalCallback(approvalSession, match, DiskMountApprovalCallback, (__bridge void *)AppName); */
 
 	CFRelease(match);
 }
@@ -81,14 +82,14 @@ void UnregisterDA(void) {
 	}
 
 	// DA Approval Session
-	if (approvalSession) {
-		DAUnregisterApprovalCallback(approvalSession, DiskMountApprovalCallback, (__bridge void *)AppName);
+	/*if (approvalSession) {
+	        DAUnregisterApprovalCallback(approvalSession, DiskMountApprovalCallback, (__bridge void *)AppName);
 
-		DAApprovalSessionUnscheduleFromRunLoop(approvalSession, CFRunLoopGetMain(), kCFRunLoopCommonModes);
-		CFRelease(approvalSession);
+	        DAApprovalSessionUnscheduleFromRunLoop(approvalSession, CFRunLoopGetMain(), kCFRunLoopCommonModes);
+	        CFRelease(approvalSession);
 
-		NSLog(@"Disk Arbitration Approval Session destoryed");
-	}
+	        NSLog(@"Disk Arbitration Approval Session destoryed");
+	   }*/
 
 	[ntfsDisks removeAllObjects];
 	ntfsDisks = nil;
@@ -100,42 +101,44 @@ BOOL Validate(DADiskRef diskRef) {
 }
 
 void DiskAppearedCallback(DADiskRef diskRef, void *context) {
-	NSLog(@"-- DiskAppearedCallback ---");
+	NSLog(@"DiskAppearedCallback called: %s", DADiskGetBSDName(diskRef));
 
-	if (context == (__bridge void *)AppName) {
-		Disk *disk = [[Disk alloc] initWithDADiskRef:diskRef];
-		[disk logInfo];
-	}
+	Disk *disk = [[Disk alloc] initWithDADiskRef:diskRef];
+	NSLog(@"Name: %@ \tUUID: %@", disk.volumeName, disk.volumeUUID);
+
+	[[NSNotificationCenter defaultCenter] postNotificationName:NTFSDiskAppearedNotification object:disk];
 }
 
 void DiskDisappearedCallback(DADiskRef diskRef, void *context) {
-	NSLog(@"-- DiskDisappearedCallback ---");
+	NSLog(@"DiskDisappearedCallback called: %s", DADiskGetBSDName(diskRef));
 
-	if (context == (__bridge void *)AppName) {
-		Disk *disk = [Disk getDiskForDARef:diskRef];
+	Disk *disk = [Disk getDiskForDARef:diskRef];
+	NSLog(@"Name: %@ \tUUID: %@", disk.volumeName, disk.volumeUUID);
 
-		[disk logInfo];
-		[disk disappeared];
+	[[NSNotificationCenter defaultCenter] postNotificationName:NTFSDiskDisappearedNotification object:disk];
+}
+
+void DiskDescriptionChangedCallback(DADiskRef diskRef, CFArrayRef keys, void *context) {
+	NSLog(@"DiskDescriptionChangedCallback called: %s", DADiskGetBSDName(diskRef));
+
+	Disk *disk = [Disk getDiskForDARef:diskRef];
+
+	if (disk) {
+		CFDictionaryRef newDesc = DADiskCopyDescription(diskRef);
+		disk.desc = newDesc;
+		CFRelease(newDesc);
 	}
 }
 
-DADissenterRef DiskMountApprovalCallback(DADiskRef diskRef, void *context) {
-	NSLog(@"-- DiskMountApprovalCallback ---");
+/*DADissenterRef DiskMountApprovalCallback(DADiskRef diskRef, void *context) {
+        NSLog(@"DiskMountApprovalCallback called: %s", DADiskGetBSDName(diskRef));
 
-	if (context == (__bridge void *)AppName) {
+        if (context == (__bridge void *)AppName) {
+                DADissenterRef dissenter = DADissenterCreate(kCFAllocatorDefault,
+                                                             kDAReturnNotPermitted,
+                                                             CFSTR("NTFS OS X application is in-charge."));
+                return dissenter; // For all NTFS disk
+           }
 
-		Disk *disk = [[Disk alloc] initWithDADiskRef:diskRef];
-		[disk logInfo];
-
-		NSString *cmd = [NSString stringWithFormat:@"echo \"UUID=%@ none ntfs rw,auto,nobrowse\" | tee -a /etc/fstab", [disk volumeUUID]];
-
-		NSLog(@"%@", cmd);
-
-		STPrivilegedTask *task = [[STPrivilegedTask alloc] initWithLaunchPath:@"/bin/sh"];
-		[task setArguments:[NSArray arrayWithObjects: @"-c", [NSString stringWithFormat:@"%@", cmd], nil]];
-		[task launch];
-		[task waitUntilExit];
-	}
-
-	return NULL;
-}
+        return NULL; // for all disks
+   } */

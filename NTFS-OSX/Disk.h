@@ -1,5 +1,5 @@
 //
-//  Volume.h
+//  Disk.h
 //  NTFS-OSX
 //
 //  Created by Jeevanandam M. on 6/5/15.
@@ -12,16 +12,18 @@
 }
 
 @property (readonly, copy) NSString *BSDName;
+@property CFDictionaryRef desc;
 @property (readonly, copy) NSString *volumeUUID;
 @property (readonly, copy) NSString *volumeName;
-@property (nonatomic, copy) NSURL *volumeURL;
 @property (nonatomic, copy) NSString *volumePath;
 @property (nonatomic) BOOL isNTFSWritable;
-@property (nonatomic) BOOL isMounted;
 
 + (Disk *)getDiskForDARef:(DADiskRef)diskRef;
++ (Disk *)getDiskForDevicePath:(NSString *)devicePath;
 - (id)initWithDADiskRef:(DADiskRef)diskRef;
-- (void)logInfo;
 - (void)disappeared;
+- (void)enableNTFSWrite;
+- (void)mount;
+- (void)unmount;
 
 @end
