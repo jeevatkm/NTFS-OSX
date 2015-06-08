@@ -352,6 +352,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "NTFS OS X";
 				SDKROOT = macosx;
 			};
 			name = Debug;
@@ -390,6 +391,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_NAME = "NTFS OS X";
 				SDKROOT = macosx;
 			};
 			name = Release;
@@ -434,7 +436,7 @@
 				INFOPLIST_FILE = "NTFS-OSXTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/NTFS-OSX.app/Contents/MacOS/NTFS-OSX";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/NTFS OS X.app/Contents/MacOS/NTFS OS X";
 			};
 			name = Debug;
 		};
@@ -450,7 +452,7 @@
 				INFOPLIST_FILE = "NTFS-OSXTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/NTFS-OSX.app/Contents/MacOS/NTFS-OSX";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/NTFS OS X.app/Contents/MacOS/NTFS OS X";
 			};
 			name = Release;
 		};
