@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Application     : NTFS OS X
+ * Application: NTFS OS X
  * Copyright (c) 2015 Jeevanandam M. (jeeva@myjeeva.com)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -34,6 +34,9 @@
 #import "NTFSApp.h"
 #import "Arbitration.h"
 #import "Disk.h"
+#import "LaunchService.h"
+
+NSString * const AppStatusBarIconName = @"ntfs_osx.png";
 
 @implementation NTFSApp
 
@@ -104,12 +107,11 @@
 		[confirm setMessageText:msgText];
 		[confirm setInformativeText:@"Would you like to enable NTFS write mode for this disk?"];
 		[confirm setAlertStyle:NSWarningAlertStyle];
-		[confirm setIcon:[NSImage imageNamed:@"ntfs_osx.png"]];
+		[confirm setIcon:[NSImage imageNamed:AppStatusBarIconName]];
 
-		//[NSApp activateIgnoringOtherApps:TRUE];
 		[[NSRunningApplication currentApplication] activateWithOptions:NSApplicationActivateIgnoringOtherApps];
 		if ([confirm runModal] == NSAlertFirstButtonReturn) {
-			NSLog(@"Enabling NTFS write mode for '%@'", disk.volumeName);
+			NSLog(@"Enabling NTFS write mode for disk '%@'", disk.volumeName);
 			[disk enableNTFSWrite];
 			[disk unmount];
 			[disk mount];
@@ -130,15 +132,17 @@
 
 	if (disk) {
 		NSLog(@"NTFS Disk: '%@' mounted\tVolume Name: %@", disk.BSDName, disk.volumeName);
+        
+        AddPathToFinderFavorites(disk.volumePath);
 
-		[self addVolumePathToFavorites:disk.volumePath];
+		//[self addVolumePathToFavorites:disk.volumePath];
 
 		[[NSWorkspace sharedWorkspace] setIcon:disk.icon forFile:disk.volumePath options:0];
 	}
 
 }
 
-- (void)volumeUnmountNotification:(NSNotification *) notification {
+/*- (void)volumeUnmountNotification:(NSNotification *) notification {
 	Disk *disk = [Disk getDiskForUserInfo:notification.userInfo];
 
 	if (disk) {
@@ -146,7 +150,7 @@
 
 	}
 
-}
+} */
 
 
 #pragma mark - Private Methods
@@ -180,7 +184,7 @@
 
 	statusItem = [[NSStatusBar systemStatusBar] statusItemWithLength:NSSquareStatusItemLength];
 	statusItem.highlightMode = YES;
-	statusItem.image = [NSImage imageNamed:@"ntfs_osx.png"];
+	statusItem.image = [NSImage imageNamed:AppStatusBarIconName];
 	statusItem.toolTip = @"Enable native option of NTFS Write on Mac OSX";
 	statusItem.menu = statusMenu;
 	statusItem.title = @"";
@@ -198,7 +202,7 @@
 	NSNotificationCenter *wcenter = [[NSWorkspace sharedWorkspace] notificationCenter];
 
 	[wcenter addObserver:self selector:@selector(volumeMountNotification:) name:NSWorkspaceDidMountNotification object:nil];
-	[wcenter addObserver:self selector:@selector(volumeUnmountNotification:) name:NSWorkspaceDidUnmountNotification object:nil];
+	//[wcenter addObserver:self selector:@selector(volumeUnmountNotification:) name:NSWorkspaceDidUnmountNotification object:nil];
 }
 
 - (void)unregisterSession {
@@ -207,7 +211,7 @@
 	[[[NSWorkspace sharedWorkspace] notificationCenter] removeObserver:self];
 }
 
--(void) addVolumePathToFavorites:(NSString *)path {
+/*-(void) addVolumePathToFavorites:(NSString *)path {
 	CFURLRef url = (__bridge CFURLRef)[NSURL fileURLWithPath:path];
 	LSSharedFileListRef favoritesRef = LSSharedFileListCreate(NULL, kLSSharedFileListFavoriteItems, NULL);
 
@@ -249,6 +253,6 @@
 	}
 
 	CFRelease(favoritesRef);
-}
+} */
 
 @end

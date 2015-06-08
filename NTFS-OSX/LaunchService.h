@@ -24,33 +24,22 @@
  */
 
 //
-//  Disk.h
+//  LaunchService.h
 //  NTFS-OSX
 //
-//  Created by Jeevanandam M. on 6/5/15.
+//  Created by Jeevanandam M. on 6/8/15.
 //  Copyright (c) 2015 myjeeva.com. All rights reserved.
 //
 
 
-@interface Disk : NSObject {
-	CFTypeRef _diskRef;
-	NSImage *icon;
-}
+@interface LaunchService : NSObject
 
-@property (readonly, copy) NSString *BSDName;
-@property CFDictionaryRef desc;
-@property (readonly, copy) NSString *volumeUUID;
-@property (readonly, copy) NSString *volumeName;
-@property (nonatomic, copy) NSString *volumePath;
-@property (nonatomic) BOOL isNTFSWritable;
-@property (readonly, retain) NSImage *icon;
+void AddPathToFinderFavorites(NSString *path);
 
-+ (Disk *)getDiskForDARef:(DADiskRef)diskRef;
-+ (Disk *)getDiskForUserInfo:(NSDictionary *)userInfo;
-- (id)initWithDADiskRef:(DADiskRef)diskRef;
-- (void)disappeared;
-- (void)enableNTFSWrite;
-- (void)mount;
-- (void)unmount;
+LSSharedFileListRef GetFileListRef(CFStringRef fileListRef);
+
+LSSharedFileListItemRef InsertItemURL(LSSharedFileListRef inList,
+                                      LSSharedFileListItemRef insertAfterThisItem,
+                                      CFURLRef url);
 
 @end

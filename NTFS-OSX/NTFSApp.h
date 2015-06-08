@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Application     : NTFS OS X
+ * Application: NTFS OS X
  * Copyright (c) 2015 Jeevanandam M. (jeeva@myjeeva.com)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -38,3 +38,5 @@
 @property(strong, nonatomic) NSStatusItem *statusItem;
 
 @end
+
+extern NSString * const AppStatusBarIconName;
