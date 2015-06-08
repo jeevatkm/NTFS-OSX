@@ -7,6 +7,7 @@
 //
 
 #import "CommandLine.h"
+#import "NSString+NTFS_OSX.h"
 
 @implementation CommandLine
 
@@ -30,7 +31,7 @@
 	NSData *data = [file readDataToEndOfFile];
 	NSString *output = [[NSString alloc] initWithData: data encoding: NSUTF8StringEncoding];
 
-	return output;
+	return [output trim];
 }
 
 @end

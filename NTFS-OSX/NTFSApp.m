@@ -10,8 +10,6 @@
 #import "Arbitration.h"
 #import "Disk.h"
 
-NSString * const NSDevicePath = @"NSDevicePath";
-
 @implementation NTFSApp
 
 @synthesize statusItem;
@@ -26,7 +24,7 @@ NSString * const NSDevicePath = @"NSDevicePath";
 		// Disk Arbitration
 		RegisterDA();
 
-		// Workspace Notification
+		// App & Workspace Notification
 		[self registerSession];
 	}
 
@@ -37,7 +35,7 @@ NSString * const NSDevicePath = @"NSDevicePath";
 	// Disk Arbitration
 	UnregisterDA();
 
-	// Workspace Notification
+	// App & Workspace Notification
 	[self unregisterSession];
 }
 
@@ -60,6 +58,9 @@ NSString * const NSDevicePath = @"NSDevicePath";
 	[[NSApplication sharedApplication] terminate:self];
 }
 
+
+#pragma mark - Notification Center Methods
+
 - (void)ntfsDiskAppeared:(NSNotification *)notification {
 	Disk *disk = notification.object;
 
@@ -69,8 +70,6 @@ NSString * const NSDevicePath = @"NSDevicePath";
 	if (disk.isNTFSWritable) {
 		NSLog(@"NTFS write mode already enabled for '%@'", disk.volumeName);
 	} else {
-		NSLog(@"Enabling NTFS write mode for '%@'", disk.volumeName);
-
 		NSString *msgText = [NSString stringWithFormat:@"Disk detected: %@", disk.volumeName];
 		//NSString *infoText = [NSString stringWithFormat:@"Would you like to enable NTFS write mode for disk '%@'", disk.volumeName];
 
@@ -82,8 +81,10 @@ NSString * const NSDevicePath = @"NSDevicePath";
 		[confirm setAlertStyle:NSWarningAlertStyle];
 		[confirm setIcon:[NSImage imageNamed:@"ntfs_osx.png"]];
 
-		[NSApp activateIgnoringOtherApps:YES];
+		//[NSApp activateIgnoringOtherApps:TRUE];
+		[[NSRunningApplication currentApplication] activateWithOptions:NSApplicationActivateIgnoringOtherApps];
 		if ([confirm runModal] == NSAlertFirstButtonReturn) {
+			NSLog(@"Enabling NTFS write mode for '%@'", disk.volumeName);
 			[disk enableNTFSWrite];
 			[disk unmount];
 			[disk mount];
@@ -97,6 +98,29 @@ NSString * const NSDevicePath = @"NSDevicePath";
 	NSLog(@"ntfsDiskDisappeared called - %@", disk.BSDName);
 
 	[disk disappeared];
+}
+
+- (void)volumeMountNotification:(NSNotification *) notification {
+	Disk *disk = [Disk getDiskForUserInfo:notification.userInfo];
+
+	if (disk) {
+		NSLog(@"NTFS Disk: '%@' mounted\tVolume Name: %@", disk.BSDName, disk.volumeName);
+
+		[self addVolumePathToFavorites:disk.volumePath];
+
+		[[NSWorkspace sharedWorkspace] setIcon:disk.icon forFile:disk.volumePath options:0];
+	}
+
+}
+
+- (void)volumeUnmountNotification:(NSNotification *) notification {
+	Disk *disk = [Disk getDiskForUserInfo:notification.userInfo];
+
+	if (disk) {
+		NSLog(@"NTFS Disk: '%@' unmounted\tVolume Name: %@", disk.BSDName, disk.volumeName);
+
+	}
+
 }
 
 
@@ -139,15 +163,67 @@ NSString * const NSDevicePath = @"NSDevicePath";
 }
 
 - (void)registerSession {
-	NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
+	// App Level Notification
+	NSNotificationCenter *acenter = [NSNotificationCenter defaultCenter];
 
-	[center removeObserver:self];
-	[center addObserver:self selector:@selector(ntfsDiskAppeared:) name:NTFSDiskAppearedNotification object:nil];
-	[center addObserver:self selector:@selector(ntfsDiskDisappeared:) name:NTFSDiskDisappearedNotification object:nil];
+	[acenter addObserver:self selector:@selector(ntfsDiskAppeared:) name:NTFSDiskAppearedNotification object:nil];
+	[acenter addObserver:self selector:@selector(ntfsDiskDisappeared:) name:NTFSDiskDisappearedNotification object:nil];
+
+	// Workspace Level Notification
+	NSNotificationCenter *wcenter = [[NSWorkspace sharedWorkspace] notificationCenter];
+
+	[wcenter addObserver:self selector:@selector(volumeMountNotification:) name:NSWorkspaceDidMountNotification object:nil];
+	[wcenter addObserver:self selector:@selector(volumeUnmountNotification:) name:NSWorkspaceDidUnmountNotification object:nil];
 }
 
 - (void)unregisterSession {
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
+
+	[[[NSWorkspace sharedWorkspace] notificationCenter] removeObserver:self];
+}
+
+-(void) addVolumePathToFavorites:(NSString *)path {
+	CFURLRef url = (__bridge CFURLRef)[NSURL fileURLWithPath:path];
+	LSSharedFileListRef favoritesRef = LSSharedFileListCreate(NULL, kLSSharedFileListFavoriteItems, NULL);
+
+	UInt32 seed;
+	CFArrayRef items = LSSharedFileListCopySnapshot(favoritesRef, &seed);
+
+	NSLog(@"Items :: %@", items);
+	BOOL found = FALSE;
+	for(size_t i = 0; i < CFArrayGetCount(items); i++) {
+		LSSharedFileListItemRef item = (LSSharedFileListItemRef)CFArrayGetValueAtIndex(items, i);
+		if(!item) { continue; }
+
+		CFURLRef outURL = NULL;
+		LSSharedFileListItemResolve(item, kLSSharedFileListNoUserInteraction, (CFURLRef *) &outURL, NULL); //kLSSharedFileListDoNotMountVolumes
+		if(!outURL) {  continue; }
+
+		// Path string of the favorites item
+		//CFStringRef itemPath = CFURLCopyFileSystemPath(outURL, kCFURLPOSIXPathStyle);
+		found = CFEqual(url, outURL);
+
+		//NSLog(@"Found: %hhd, itemPath :: %@", found, itemPath);
+
+		CFRelease(outURL);
+		//CFRelease(itemPath);
+
+		if (found) {
+			break;
+		}
+	}
+
+	if (favoritesRef && !found) {
+		LSSharedFileListItemRef item = LSSharedFileListInsertItemURL(favoritesRef,
+		                                                             kLSSharedFileListItemLast, NULL,
+		                                                             NULL,
+		                                                             url, NULL, NULL);
+		if (item) {
+			CFRelease(item);
+		}
+	}
+
+	CFRelease(favoritesRef);
 }
 
 @end

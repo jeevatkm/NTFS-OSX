@@ -6,10 +6,14 @@
 //  Copyright (c) 2015 myjeeva.com. All rights reserved.
 //
 
+
+#import <IOKit/kext/KextManager.h>
+
 #import "Disk.h"
 #import "Arbitration.h"
 #import "CommandLine.h"
 #import "STPrivilegedTask.h"
+
 
 @implementation Disk
 
@@ -32,7 +36,9 @@
 	return nil;
 }
 
-+ (Disk *)getDiskForDevicePath:(NSString *)devicePath {
++ (Disk *)getDiskForUserInfo:(NSDictionary *)userInfo {
+	NSString *devicePath = [userInfo objectForKey:@"NSDevicePath"];
+
 	for (Disk *disk in ntfsDisks) {
 		if ([disk.volumePath isEqualToString:devicePath]) {
 			return disk;
@@ -138,10 +144,51 @@
 - (BOOL)isNTFSWritable {
 	NSString *cmd = [NSString stringWithFormat:@"grep \"%@\" /etc/fstab", volumeUUID];
 	NSString *output = [CommandLine run:cmd];
-
 	NSLog(@"output: %@", output);
 
-	return [[self ntfsConfig] isEqualToString:output];
+	NSString *cfg = [self ntfsConfig];
+	if ([cfg isEqualToString:output]) {
+		return TRUE;
+	}
+
+	return FALSE;
+}
+
+- (NSImage *)icon
+{
+	if (!icon) {
+		if (desc) {
+			CFDictionaryRef iconRef = CFDictionaryGetValue(desc, kDADiskDescriptionMediaIconKey);
+			if (iconRef) {
+
+				CFStringRef identifier = CFDictionaryGetValue(iconRef, CFSTR("CFBundleIdentifier"));
+				NSURL *url = (__bridge NSURL *)KextManagerCreateURLForBundleIdentifier (kCFAllocatorDefault, identifier);
+				if (url) {
+					NSString *bundlePath = [url path];
+
+					NSBundle *bundle = [NSBundle bundleWithPath:bundlePath];
+					if (bundle) {
+						NSString *filename = (NSString *) CFDictionaryGetValue(iconRef, CFSTR("IOBundleResourceFile"));
+						NSString *basename = [filename stringByDeletingPathExtension];
+						NSString *fileext =  [filename pathExtension];
+
+						NSString *path = [bundle pathForResource:basename ofType:fileext];
+						if (path) {
+							icon = [[NSImage alloc] initWithContentsOfFile:path];
+						}
+					}
+					else {
+						NSLog(@"Failed to load bundle with URL: %@", [url absoluteString]);
+					}
+				}
+				else {
+					NSLog(@"Failed to create URL for bundle identifier: %@", (__bridge NSString *)identifier);
+				}
+			}
+		}
+	}
+
+	return icon;
 }
 
 

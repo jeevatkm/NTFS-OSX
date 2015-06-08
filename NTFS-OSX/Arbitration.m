@@ -54,17 +54,17 @@ void RegisterDA(void) {
 	DARegisterDiskDescriptionChangedCallback(session, match, NULL, DiskDescriptionChangedCallback, (__bridge void *)AppName);
 
 	// Disk Arbitration Approval Session
-	/*approvalSession = DAApprovalSessionCreate(kCFAllocatorDefault);
-	   if (!approvalSession) {
-	        NSLog(@"Unable to create Disk Arbitration approval session.");
-	        return;
-	   }
+	approvalSession = DAApprovalSessionCreate(kCFAllocatorDefault);
+	if (!approvalSession) {
+		NSLog(@"Unable to create Disk Arbitration approval session.");
+		return;
+	}
 
-	   NSLog(@"Disk Arbitration Approval Session created");
-	   DAApprovalSessionScheduleWithRunLoop(approvalSession, CFRunLoopGetMain(), kCFRunLoopCommonModes);
+	NSLog(@"Disk Arbitration Approval Session created");
+	DAApprovalSessionScheduleWithRunLoop(approvalSession, CFRunLoopGetMain(), kCFRunLoopCommonModes);
 
-	   // Same match condition for Approval session too
-	   DARegisterDiskMountApprovalCallback(approvalSession, match, DiskMountApprovalCallback, (__bridge void *)AppName); */
+	// Same match condition for Approval session too
+	DARegisterDiskMountApprovalCallback(approvalSession, match, DiskMountApprovalCallback, (__bridge void *)AppName);
 
 	CFRelease(match);
 }
@@ -82,14 +82,14 @@ void UnregisterDA(void) {
 	}
 
 	// DA Approval Session
-	/*if (approvalSession) {
-	        DAUnregisterApprovalCallback(approvalSession, DiskMountApprovalCallback, (__bridge void *)AppName);
+	if (approvalSession) {
+		DAUnregisterApprovalCallback(approvalSession, DiskMountApprovalCallback, (__bridge void *)AppName);
 
-	        DAApprovalSessionUnscheduleFromRunLoop(approvalSession, CFRunLoopGetMain(), kCFRunLoopCommonModes);
-	        CFRelease(approvalSession);
+		DAApprovalSessionUnscheduleFromRunLoop(approvalSession, CFRunLoopGetMain(), kCFRunLoopCommonModes);
+		CFRelease(approvalSession);
 
-	        NSLog(@"Disk Arbitration Approval Session destoryed");
-	   }*/
+		NSLog(@"Disk Arbitration Approval Session destoryed");
+	}
 
 	[ntfsDisks removeAllObjects];
 	ntfsDisks = nil;
@@ -97,16 +97,16 @@ void UnregisterDA(void) {
 
 BOOL Validate(DADiskRef diskRef) {
 
-	return YES;
+	return TRUE;
 }
 
 void DiskAppearedCallback(DADiskRef diskRef, void *context) {
 	NSLog(@"DiskAppearedCallback called: %s", DADiskGetBSDName(diskRef));
 
-	Disk *disk = [[Disk alloc] initWithDADiskRef:diskRef];
-	NSLog(@"Name: %@ \tUUID: %@", disk.volumeName, disk.volumeUUID);
+	//Disk *disk = [[Disk alloc] initWithDADiskRef:diskRef];
+	//NSLog(@"Name: %@ \tUUID: %@", disk.volumeName, disk.volumeUUID);
 
-	[[NSNotificationCenter defaultCenter] postNotificationName:NTFSDiskAppearedNotification object:disk];
+	//[[NSNotificationCenter defaultCenter] postNotificationName:NTFSDiskAppearedNotification object:disk];
 }
 
 void DiskDisappearedCallback(DADiskRef diskRef, void *context) {
@@ -130,15 +130,22 @@ void DiskDescriptionChangedCallback(DADiskRef diskRef, CFArrayRef keys, void *co
 	}
 }
 
-/*DADissenterRef DiskMountApprovalCallback(DADiskRef diskRef, void *context) {
-        NSLog(@"DiskMountApprovalCallback called: %s", DADiskGetBSDName(diskRef));
+DADissenterRef DiskMountApprovalCallback(DADiskRef diskRef, void *context) {
+	NSLog(@"DiskMountApprovalCallback called: %s", DADiskGetBSDName(diskRef));
 
-        if (context == (__bridge void *)AppName) {
-                DADissenterRef dissenter = DADissenterCreate(kCFAllocatorDefault,
-                                                             kDAReturnNotPermitted,
-                                                             CFSTR("NTFS OS X application is in-charge."));
-                return dissenter; // For all NTFS disk
-           }
+	if (context == (__bridge void *)AppName) {
+		/*DADissenterRef dissenter = DADissenterCreate(kCFAllocatorDefault,
+		                                             kDAReturnNotPermitted,
+		                                             CFSTR("NTFS OS X application is in-charge."));
+		   return dissenter; */// For all NTFS disk
 
-        return NULL; // for all disks
-   } */
+
+	}
+
+	Disk *disk = [[Disk alloc] initWithDADiskRef:diskRef];
+	NSLog(@"Name: %@ \tUUID: %@", disk.volumeName, disk.volumeUUID);
+
+	[[NSNotificationCenter defaultCenter] postNotificationName:NTFSDiskAppearedNotification object:disk];
+
+	return NULL; // for all disks
+}

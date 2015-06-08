@@ -11,6 +11,7 @@
 		13824BCD1B21DD2F00EEE019 /* Arbitration.m in Sources */ = {isa = PBXBuildFile; fileRef = 13824BCC1B21DD2F00EEE019 /* Arbitration.m */; };
 		13904C5F1B23F7AA0055253A /* STPrivilegedTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 13904C5E1B23F7AA0055253A /* STPrivilegedTask.m */; };
 		13904C661B24B93E0055253A /* CommandLine.m in Sources */ = {isa = PBXBuildFile; fileRef = 13904C651B24B93E0055253A /* CommandLine.m */; };
+		13904C691B2522C60055253A /* NSString+NTFS_OSX.m in Sources */ = {isa = PBXBuildFile; fileRef = 13904C681B2522C60055253A /* NSString+NTFS_OSX.m */; };
 		13CDB3A71B1FF08D00A8A374 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13CDB3A61B1FF08D00A8A374 /* AppDelegate.m */; };
 		13CDB3A91B1FF08D00A8A374 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13CDB3A81B1FF08D00A8A374 /* main.m */; };
 		13CDB3AB1B1FF08D00A8A374 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13CDB3AA1B1FF08D00A8A374 /* Images.xcassets */; };
@@ -41,6 +42,8 @@
 		13904C5E1B23F7AA0055253A /* STPrivilegedTask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STPrivilegedTask.m; sourceTree = "<group>"; };
 		13904C641B24B93E0055253A /* CommandLine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommandLine.h; sourceTree = "<group>"; };
 		13904C651B24B93E0055253A /* CommandLine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommandLine.m; sourceTree = "<group>"; };
+		13904C671B2522C60055253A /* NSString+NTFS_OSX.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+NTFS_OSX.h"; sourceTree = "<group>"; };
+		13904C681B2522C60055253A /* NSString+NTFS_OSX.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+NTFS_OSX.m"; sourceTree = "<group>"; };
 		13CDB3A01B1FF08D00A8A374 /* NTFS OS X.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "NTFS OS X.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		13CDB3A41B1FF08D00A8A374 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		13CDB3A51B1FF08D00A8A374 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -83,6 +86,15 @@
 				13904C5E1B23F7AA0055253A /* STPrivilegedTask.m */,
 			);
 			name = STPrivilegedTask;
+			sourceTree = "<group>";
+		};
+		13904C6A1B2530EE0055253A /* Category */ = {
+			isa = PBXGroup;
+			children = (
+				13904C671B2522C60055253A /* NSString+NTFS_OSX.h */,
+				13904C681B2522C60055253A /* NSString+NTFS_OSX.m */,
+			);
+			name = Category;
 			sourceTree = "<group>";
 		};
 		13CDB3971B1FF08D00A8A374 = {
@@ -155,6 +167,7 @@
 				9CEDC6381B2250DD0008E929 /* Disk.h */,
 				9CEDC6391B2250DD0008E929 /* Disk.m */,
 				13CDB3A31B1FF08D00A8A374 /* Other Sources */,
+				13904C6A1B2530EE0055253A /* Category */,
 			);
 			name = Source;
 			sourceTree = "<group>";
@@ -278,6 +291,7 @@
 				13CDB3A71B1FF08D00A8A374 /* AppDelegate.m in Sources */,
 				9CEDC63A1B2250DD0008E929 /* Disk.m in Sources */,
 				13904C661B24B93E0055253A /* CommandLine.m in Sources */,
+				13904C691B2522C60055253A /* NSString+NTFS_OSX.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

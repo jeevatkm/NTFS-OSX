@@ -13,5 +13,3 @@
 @property(strong, nonatomic) NSStatusItem *statusItem;
 
 @end
-
-extern NSString * const NSDevicePath;
