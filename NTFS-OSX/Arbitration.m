@@ -151,6 +151,9 @@ void DiskDescriptionChangedCallback(DADiskRef diskRef, CFArrayRef keys, void *co
 	if (disk) {
 		CFDictionaryRef newDesc = DADiskCopyDescription(diskRef);
 		disk.desc = newDesc;
+
+		NSLog(@"Updated Disk Description: %@", disk.desc);
+
 		CFRelease(newDesc);
 	}
 }

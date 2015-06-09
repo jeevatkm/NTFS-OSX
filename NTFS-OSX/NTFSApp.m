@@ -111,9 +111,10 @@ NSString * const AppStatusBarIconName = @"ntfs_osx.png";
 
 		[[NSRunningApplication currentApplication] activateWithOptions:NSApplicationActivateIgnoringOtherApps];
 		if ([confirm runModal] == NSAlertFirstButtonReturn) {
-			NSLog(@"Enabling NTFS write mode for disk '%@'", disk.volumeName);
 			[disk enableNTFSWrite];
+
 			[disk unmount];
+			//[disk performSelector:@selector(mount) withObject:nil afterDelay:1.0];
 			[disk mount];
 		}
 	}
@@ -131,7 +132,7 @@ NSString * const AppStatusBarIconName = @"ntfs_osx.png";
 	Disk *disk = [Disk getDiskForUserInfo:notification.userInfo];
 
 	if (disk) {
-		NSLog(@"NTFS Disk: '%@' mounted\tVolume Name: %@", disk.BSDName, disk.volumeName);
+		NSLog(@"NTFS Disk: '%@' mounted at '%@'", disk.BSDName, disk.volumePath);
 
 		AddPathToFinderFavorites(disk.volumePath);
 
@@ -144,7 +145,7 @@ NSString * const AppStatusBarIconName = @"ntfs_osx.png";
         Disk *disk = [Disk getDiskForUserInfo:notification.userInfo];
 
         if (disk) {
-                NSLog(@"NTFS Disk: '%@' unmounted\tVolume Name: %@", disk.BSDName, disk.volumeName);
+                NSLog(@"NTFS Disk: '%@' mounted at '%@'", disk.BSDName, disk.volumePath);
 
         }
 

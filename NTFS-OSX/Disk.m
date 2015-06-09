@@ -122,6 +122,7 @@
 	NSString *cmd = [NSString stringWithFormat:@"echo \"%@\" | tee -a /etc/fstab", [self ntfsConfig]];
 
 	[STPrivilegedTask launchedPrivilegedTaskWithLaunchPath:@"/bin/sh" arguments:[NSArray arrayWithObjects: @"-c", cmd, nil]];
+	NSLog(@"NTFS write mode enabled for disk '%@'", self.volumeName);
 }
 
 - (void)mount {
@@ -185,6 +186,7 @@
 
 	return FALSE;
 }
+
 
 
 #pragma mark - Private Methods
