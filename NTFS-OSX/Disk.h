@@ -43,7 +43,6 @@
 @property (readonly, copy) NSString *volumeName;
 @property (nonatomic, copy) NSString *volumePath;
 @property (nonatomic) BOOL isNTFSWritable;
-@property (readonly, retain) NSImage *icon;
 
 + (Disk *)getDiskForDARef:(DADiskRef)diskRef;
 + (Disk *)getDiskForUserInfo:(NSDictionary *)userInfo;

@@ -128,10 +128,10 @@ BOOL Validate(DADiskRef diskRef) {
 void DiskAppearedCallback(DADiskRef diskRef, void *context) {
 	NSLog(@"DiskAppearedCallback called: %s", DADiskGetBSDName(diskRef));
 
-	//Disk *disk = [[Disk alloc] initWithDADiskRef:diskRef];
-	//NSLog(@"Name: %@ \tUUID: %@", disk.volumeName, disk.volumeUUID);
+	Disk *disk = [[Disk alloc] initWithDADiskRef:diskRef];
+	NSLog(@"Name: %@ \tUUID: %@", disk.volumeName, disk.volumeUUID);
 
-	//[[NSNotificationCenter defaultCenter] postNotificationName:NTFSDiskAppearedNotification object:disk];
+	[[NSNotificationCenter defaultCenter] postNotificationName:NTFSDiskAppearedNotification object:disk];
 }
 
 void DiskDisappearedCallback(DADiskRef diskRef, void *context) {
@@ -158,19 +158,8 @@ void DiskDescriptionChangedCallback(DADiskRef diskRef, CFArrayRef keys, void *co
 DADissenterRef DiskMountApprovalCallback(DADiskRef diskRef, void *context) {
 	NSLog(@"DiskMountApprovalCallback called: %s", DADiskGetBSDName(diskRef));
 
-	if (context == (__bridge void *)AppName) {
-		/*DADissenterRef dissenter = DADissenterCreate(kCFAllocatorDefault,
-		                                             kDAReturnNotPermitted,
-		                                             CFSTR("NTFS OS X application is in-charge."));
-		   return dissenter; */// For all NTFS disk
-
-
-	}
-
 	Disk *disk = [[Disk alloc] initWithDADiskRef:diskRef];
 	NSLog(@"Name: %@ \tUUID: %@", disk.volumeName, disk.volumeUUID);
-
-	[[NSNotificationCenter defaultCenter] postNotificationName:NTFSDiskAppearedNotification object:disk];
 
 	return NULL; // for all disks
 }

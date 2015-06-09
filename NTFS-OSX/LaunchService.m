@@ -36,61 +36,61 @@
 @implementation LaunchService
 
 void AddPathToFinderFavorites(NSString *path) {
-    LSSharedFileListRef favoritesRef = GetFileListRef(kLSSharedFileListFavoriteItems); // LSSharedFileListCreate(NULL, kLSSharedFileListFavoriteItems, NULL);
-    
-    UInt32 seed;
-    CFArrayRef items = LSSharedFileListCopySnapshot(favoritesRef, &seed);
-    
-    NSLog(@"Items :: %@", items);
-    BOOL found = FALSE;
-    CFURLRef url = (__bridge CFURLRef)[NSURL fileURLWithPath:path];
-    for(size_t i = 0; i < CFArrayGetCount(items); i++) {
-        LSSharedFileListItemRef item = (LSSharedFileListItemRef)CFArrayGetValueAtIndex(items, i);
-        if(!item) { continue; }
-        
-        CFURLRef outURL = NULL;
-        LSSharedFileListItemResolve(item, kLSSharedFileListNoUserInteraction, (CFURLRef *) &outURL, NULL); //kLSSharedFileListDoNotMountVolumes
-        if(!outURL) {  continue; }
-        
-        // Path string of the favorites item
-        //CFStringRef itemPath = CFURLCopyFileSystemPath(outURL, kCFURLPOSIXPathStyle);
-        found = CFEqual(url, outURL);
-        
-        //NSLog(@"Found: %hhd, itemPath :: %@", found, itemPath);
-        
-        CFRelease(outURL);
-        //CFRelease(itemPath);
-        
-        if (found) {
-            break;
-        }
-    }
-    
-    if (favoritesRef && !found) {
-        /*LSSharedFileListItemRef item = LSSharedFileListInsertItemURL(favoritesRef,
-                                                                     kLSSharedFileListItemLast, NULL,
-                                                                     NULL,
-                                                                     url, NULL, NULL);*/
-        LSSharedFileListItemRef item = InsertItemURL(favoritesRef, kLSSharedFileListItemLast, url);
-        if (item) {
-            CFRelease(item);
-        }
-    }
-    
-    CFRelease(favoritesRef);
+	LSSharedFileListRef favoritesRef = GetFileListRef(kLSSharedFileListFavoriteItems); // LSSharedFileListCreate(NULL, kLSSharedFileListFavoriteItems, NULL);
+
+	UInt32 seed;
+	CFArrayRef items = LSSharedFileListCopySnapshot(favoritesRef, &seed);
+
+	//NSLog(@"Items :: %@", items);
+	BOOL found = FALSE;
+	CFURLRef url = (__bridge CFURLRef)[NSURL fileURLWithPath:path];
+	for(size_t i = 0; i < CFArrayGetCount(items); i++) {
+		LSSharedFileListItemRef item = (LSSharedFileListItemRef)CFArrayGetValueAtIndex(items, i);
+		if(!item) { continue; }
+
+		CFURLRef outURL = NULL;
+		LSSharedFileListItemResolve(item, kLSSharedFileListNoUserInteraction, (CFURLRef *) &outURL, NULL); //kLSSharedFileListDoNotMountVolumes
+		if(!outURL) {  continue; }
+
+		// Path string of the favorites item
+		//CFStringRef itemPath = CFURLCopyFileSystemPath(outURL, kCFURLPOSIXPathStyle);
+		found = CFEqual(url, outURL);
+
+		//NSLog(@"Found: %hhd, itemPath :: %@", found, itemPath);
+
+		CFRelease(outURL);
+		//CFRelease(itemPath);
+
+		if (found) {
+			break;
+		}
+	}
+
+	if (favoritesRef && !found) {
+		/*LSSharedFileListItemRef item = LSSharedFileListInsertItemURL(favoritesRef,
+		                                                             kLSSharedFileListItemLast, NULL,
+		                                                             NULL,
+		                                                             url, NULL, NULL);*/
+		LSSharedFileListItemRef item = InsertItemURL(favoritesRef, kLSSharedFileListItemLast, url);
+		if (item) {
+			CFRelease(item);
+		}
+	}
+
+	CFRelease(favoritesRef);
 }
 
 
 LSSharedFileListRef GetFileListRef(CFStringRef fileListRef) {
-    return LSSharedFileListCreate(kCFAllocatorDefault, fileListRef, NULL);
+	return LSSharedFileListCreate(kCFAllocatorDefault, fileListRef, NULL);
 }
 
 LSSharedFileListItemRef InsertItemURL(LSSharedFileListRef inList,
                                       LSSharedFileListItemRef insertAfterThisItem,
                                       CFURLRef url) {
-    return LSSharedFileListInsertItemURL(inList,
-                                         insertAfterThisItem, NULL, NULL,
-                                         url, NULL, NULL);
+	return LSSharedFileListInsertItemURL(inList,
+	                                     insertAfterThisItem, NULL, NULL,
+	                                     url, NULL, NULL);
 }
 
 @end

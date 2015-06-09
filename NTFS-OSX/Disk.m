@@ -167,53 +167,23 @@
 }
 
 - (BOOL)isNTFSWritable {
-	NSString *cmd = [NSString stringWithFormat:@"grep \"%@\" /etc/fstab", volumeUUID];
-	NSString *output = [CommandLine run:cmd];
-	NSLog(@"output: %@", output);
+	NSString *fstabFile = @"/etc/fstab";
 
-	NSString *cfg = [self ntfsConfig];
-	if ([cfg isEqualToString:output]) {
-		return TRUE;
-	}
+	BOOL status = [[NSFileManager defaultManager] fileExistsAtPath:fstabFile];
+	NSLog(@"'%@' file exists: %@", fstabFile, status ? @"YES" : @"NO");
 
-	return FALSE;
-}
+	if (status) {
+		NSString *cmd = [NSString stringWithFormat:@"grep \"%@\" %@", volumeUUID, fstabFile];
+		NSString *output = [CommandLine run:cmd];
+		NSLog(@"output: %@", output);
 
-- (NSImage *)icon
-{
-	if (!icon) {
-		if (desc) {
-			CFDictionaryRef iconRef = CFDictionaryGetValue(desc, kDADiskDescriptionMediaIconKey);
-			if (iconRef) {
-
-				CFStringRef identifier = CFDictionaryGetValue(iconRef, CFSTR("CFBundleIdentifier"));
-				NSURL *url = (__bridge NSURL *)KextManagerCreateURLForBundleIdentifier (kCFAllocatorDefault, identifier);
-				if (url) {
-					NSString *bundlePath = [url path];
-
-					NSBundle *bundle = [NSBundle bundleWithPath:bundlePath];
-					if (bundle) {
-						NSString *filename = (NSString *) CFDictionaryGetValue(iconRef, CFSTR("IOBundleResourceFile"));
-						NSString *basename = [filename stringByDeletingPathExtension];
-						NSString *fileext =  [filename pathExtension];
-
-						NSString *path = [bundle pathForResource:basename ofType:fileext];
-						if (path) {
-							icon = [[NSImage alloc] initWithContentsOfFile:path];
-						}
-					}
-					else {
-						NSLog(@"Failed to load bundle with URL: %@", [url absoluteString]);
-					}
-				}
-				else {
-					NSLog(@"Failed to create URL for bundle identifier: %@", (__bridge NSString *)identifier);
-				}
-			}
+		//NSString *cfg = [self ntfsConfig];
+		if ([[self ntfsConfig] isEqualToString:output]) {
+			return TRUE;
 		}
 	}
 
-	return icon;
+	return FALSE;
 }
 
 

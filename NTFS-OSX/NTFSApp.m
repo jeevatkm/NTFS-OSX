@@ -107,7 +107,7 @@ NSString * const AppStatusBarIconName = @"ntfs_osx.png";
 		[confirm setMessageText:msgText];
 		[confirm setInformativeText:@"Would you like to enable NTFS write mode for this disk?"];
 		[confirm setAlertStyle:NSWarningAlertStyle];
-		[confirm setIcon:[NSImage imageNamed:AppStatusBarIconName]];
+		[confirm setIcon:[NSApp applicationIconImage]];
 
 		[[NSRunningApplication currentApplication] activateWithOptions:NSApplicationActivateIgnoringOtherApps];
 		if ([confirm runModal] == NSAlertFirstButtonReturn) {
@@ -132,25 +132,23 @@ NSString * const AppStatusBarIconName = @"ntfs_osx.png";
 
 	if (disk) {
 		NSLog(@"NTFS Disk: '%@' mounted\tVolume Name: %@", disk.BSDName, disk.volumeName);
-        
-        AddPathToFinderFavorites(disk.volumePath);
 
-		//[self addVolumePathToFavorites:disk.volumePath];
+		AddPathToFinderFavorites(disk.volumePath);
 
-		[[NSWorkspace sharedWorkspace] setIcon:disk.icon forFile:disk.volumePath options:0];
+		//[[NSWorkspace sharedWorkspace] setIcon:disk.icon forFile:disk.volumePath options:0];
 	}
 
 }
 
 /*- (void)volumeUnmountNotification:(NSNotification *) notification {
-	Disk *disk = [Disk getDiskForUserInfo:notification.userInfo];
+        Disk *disk = [Disk getDiskForUserInfo:notification.userInfo];
 
-	if (disk) {
-		NSLog(@"NTFS Disk: '%@' unmounted\tVolume Name: %@", disk.BSDName, disk.volumeName);
+        if (disk) {
+                NSLog(@"NTFS Disk: '%@' unmounted\tVolume Name: %@", disk.BSDName, disk.volumeName);
 
-	}
+        }
 
-} */
+   } */
 
 
 #pragma mark - Private Methods
@@ -210,49 +208,5 @@ NSString * const AppStatusBarIconName = @"ntfs_osx.png";
 
 	[[[NSWorkspace sharedWorkspace] notificationCenter] removeObserver:self];
 }
-
-/*-(void) addVolumePathToFavorites:(NSString *)path {
-	CFURLRef url = (__bridge CFURLRef)[NSURL fileURLWithPath:path];
-	LSSharedFileListRef favoritesRef = LSSharedFileListCreate(NULL, kLSSharedFileListFavoriteItems, NULL);
-
-	UInt32 seed;
-	CFArrayRef items = LSSharedFileListCopySnapshot(favoritesRef, &seed);
-
-	NSLog(@"Items :: %@", items);
-	BOOL found = FALSE;
-	for(size_t i = 0; i < CFArrayGetCount(items); i++) {
-		LSSharedFileListItemRef item = (LSSharedFileListItemRef)CFArrayGetValueAtIndex(items, i);
-		if(!item) { continue; }
-
-		CFURLRef outURL = NULL;
-		LSSharedFileListItemResolve(item, kLSSharedFileListNoUserInteraction, (CFURLRef *) &outURL, NULL); //kLSSharedFileListDoNotMountVolumes
-		if(!outURL) {  continue; }
-
-		// Path string of the favorites item
-		//CFStringRef itemPath = CFURLCopyFileSystemPath(outURL, kCFURLPOSIXPathStyle);
-		found = CFEqual(url, outURL);
-
-		//NSLog(@"Found: %hhd, itemPath :: %@", found, itemPath);
-
-		CFRelease(outURL);
-		//CFRelease(itemPath);
-
-		if (found) {
-			break;
-		}
-	}
-
-	if (favoritesRef && !found) {
-		LSSharedFileListItemRef item = LSSharedFileListInsertItemURL(favoritesRef,
-		                                                             kLSSharedFileListItemLast, NULL,
-		                                                             NULL,
-		                                                             url, NULL, NULL);
-		if (item) {
-			CFRelease(item);
-		}
-	}
-
-	CFRelease(favoritesRef);
-} */
 
 @end

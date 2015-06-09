@@ -36,19 +36,17 @@
 
 @implementation CommandLine
 
-+ (NSString *)run:(NSString *) command {
++ (NSString *)run:(NSString *)command {
 	NSTask *task = [[NSTask alloc] init];
 	NSPipe *pipe = [NSPipe pipe];
 	NSFileHandle *file = [pipe fileHandleForReading];
 
+	//NSArray *arguments = [NSArray arrayWithObjects: @"-c", command, nil];
+
+	NSLog(@"Running command: %@",command);
+
 	[task setLaunchPath: @"/bin/sh"];
-
-	NSArray *arguments = [NSArray arrayWithObjects: @"-c",
-	                      [NSString stringWithFormat:@"%@", command],
-	                      nil];
-	NSLog(@"run command: %@",command);
-
-	[task setArguments: arguments];
+	[task setArguments: [NSArray arrayWithObjects: @"-c", command, nil]];
 	[task setStandardOutput: pipe];
 	[task launch];
 	[task waitUntilExit];

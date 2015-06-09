@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "13CDB39F1B1FF08D00A8A374"
-               BuildableName = "NTFS-OSX.app"
+               BuildableName = "NTFS OS X.app"
                BlueprintName = "NTFS-OSX"
                ReferencedContainer = "container:NTFS-OSX.xcodeproj">
             </BuildableReference>
@@ -57,7 +57,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13CDB39F1B1FF08D00A8A374"
-            BuildableName = "NTFS-OSX.app"
+            BuildableName = "NTFS OS X.app"
             BlueprintName = "NTFS-OSX"
             ReferencedContainer = "container:NTFS-OSX.xcodeproj">
          </BuildableReference>
@@ -77,7 +77,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13CDB39F1B1FF08D00A8A374"
-            BuildableName = "NTFS-OSX.app"
+            BuildableName = "NTFS OS X.app"
             BlueprintName = "NTFS-OSX"
             ReferencedContainer = "container:NTFS-OSX.xcodeproj">
          </BuildableReference>
@@ -96,7 +96,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13CDB39F1B1FF08D00A8A374"
-            BuildableName = "NTFS-OSX.app"
+            BuildableName = "NTFS OS X.app"
             BlueprintName = "NTFS-OSX"
             ReferencedContainer = "container:NTFS-OSX.xcodeproj">
          </BuildableReference>
