@@ -24,27 +24,21 @@
  */
 
 //
-//  NSString+NTFS_OSX.m
+//  Constants.h
 //  NTFS-OSX
 //
-//  Created by Jeevanandam M. on 6/7/15.
+//  Created by Jeevanandam M. on 6/9/15.
 //  Copyright (c) 2015 myjeeva.com. All rights reserved.
 //
 
-#import "NSString+NTFS_OSX.h"
+extern NSString * const AppName;
+extern NSString * const AppBundleID;
+extern NSString * const AppStatusBarIconName;
 
-@implementation NSString (NTFS_OSX)
+extern NSString * const FstabFile;
 
-- (BOOL)isBlank
-{
-	if([[self trim] isEqualToString:@""])
-		return YES;
-	return NO;
-}
+extern NSString * const NSDevicePath;
+extern NSString * const DADiskDescriptionVolumeKindValue;
 
-- (NSString *)trim
-{
-	return [self stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-}
-
-@end
+extern NSString * const NTFSDiskAppearedNotification;
+extern NSString * const NTFSDiskDisappearedNotification;

@@ -34,12 +34,14 @@
 
 @interface LaunchService : NSObject
 
-void AddPathToFinderFavorites(NSString *path);
+LSSharedFileListItemRef AddPathToFinderFavorites(NSString *path);
+
+OSStatus RemoveItemFromFinderFavorties(LSSharedFileListItemRef item);
 
 LSSharedFileListRef GetFileListRef(CFStringRef fileListRef);
 
-LSSharedFileListItemRef InsertItemURL(LSSharedFileListRef inList,
-                                      LSSharedFileListItemRef insertAfterThisItem,
-                                      CFURLRef url);
+LSSharedFileListItemRef InsertItemURL(LSSharedFileListRef inList, LSSharedFileListItemRef insertAfterThisItem, CFURLRef url);
+
+OSStatus RemoveItemFromList(LSSharedFileListRef inList, LSSharedFileListItemRef item);
 
 @end

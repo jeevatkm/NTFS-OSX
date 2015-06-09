@@ -27,7 +27,7 @@
 //  NTFSApp.m
 //  NTFS-OSX
 //
-//  Created by Jeevanandam Madanagopal on 6/3/15.
+//  Created by Jeevanandam M. on 6/3/15.
 //  Copyright (c) 2015 myjeeva.com. All rights reserved.
 //
 
@@ -36,7 +36,7 @@
 #import "Disk.h"
 #import "LaunchService.h"
 
-NSString * const AppStatusBarIconName = @"ntfs_osx.png";
+@import ServiceManagement;
 
 @implementation NTFSApp
 
@@ -134,22 +134,28 @@ NSString * const AppStatusBarIconName = @"ntfs_osx.png";
 	if (disk) {
 		NSLog(@"NTFS Disk: '%@' mounted at '%@'", disk.BSDName, disk.volumePath);
 
-		AddPathToFinderFavorites(disk.volumePath);
+		disk.favoriteItem = AddPathToFinderFavorites(disk.volumePath);
 
 		//[[NSWorkspace sharedWorkspace] setIcon:disk.icon forFile:disk.volumePath options:0];
 	}
 
 }
 
-/*- (void)volumeUnmountNotification:(NSNotification *) notification {
-        Disk *disk = [Disk getDiskForUserInfo:notification.userInfo];
+- (void)volumeUnmountNotification:(NSNotification *) notification {
+    Disk *disk = [Disk getDiskForUserInfo:notification.userInfo];
 
-        if (disk) {
-                NSLog(@"NTFS Disk: '%@' mounted at '%@'", disk.BSDName, disk.volumePath);
-
+    if (disk) {
+        NSLog(@"NTFS Disk: '%@' mounted at '%@'", disk.BSDName, disk.volumePath);
+        
+        if (disk.favoriteItem) {
+            RemoveItemFromFinderFavorties(disk.favoriteItem);
         }
+    }
+}
 
-   } */
+- (void)toggleLaunchAtStartup:(BOOL)state {
+    SMLoginItemSetEnabled((__bridge CFStringRef)AppBundleID, state);
+}
 
 
 #pragma mark - Private Methods
@@ -201,7 +207,7 @@ NSString * const AppStatusBarIconName = @"ntfs_osx.png";
 	NSNotificationCenter *wcenter = [[NSWorkspace sharedWorkspace] notificationCenter];
 
 	[wcenter addObserver:self selector:@selector(volumeMountNotification:) name:NSWorkspaceDidMountNotification object:nil];
-	//[wcenter addObserver:self selector:@selector(volumeUnmountNotification:) name:NSWorkspaceDidUnmountNotification object:nil];
+	[wcenter addObserver:self selector:@selector(volumeUnmountNotification:) name:NSWorkspaceDidUnmountNotification object:nil];
 }
 
 - (void)unregisterSession {

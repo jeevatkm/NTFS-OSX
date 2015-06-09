@@ -24,27 +24,23 @@
  */
 
 //
-//  NSString+NTFS_OSX.m
+//  Constants.m
 //  NTFS-OSX
 //
-//  Created by Jeevanandam M. on 6/7/15.
+//  Created by Jeevanandam M. on 6/9/15.
 //  Copyright (c) 2015 myjeeva.com. All rights reserved.
 //
 
-#import "NSString+NTFS_OSX.h"
+#import "Constants.h"
 
-@implementation NSString (NTFS_OSX)
+NSString * const AppName = @"NTFS-OSX";
+NSString * const AppBundleID = @"com.myjeeva.NTFS-OSX";
+NSString * const AppStatusBarIconName = @"ntfs_osx.png";
 
-- (BOOL)isBlank
-{
-	if([[self trim] isEqualToString:@""])
-		return YES;
-	return NO;
-}
+NSString * const FstabFile = @"/etc/fstab";
 
-- (NSString *)trim
-{
-	return [self stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-}
+NSString * const NSDevicePath = @"NSDevicePath";
+NSString * const DADiskDescriptionVolumeKindValue = @"ntfs";
 
-@end
+NSString * const NTFSDiskAppearedNotification = @"NTFSDiskAppearedNotification";
+NSString * const NTFSDiskDisappearedNotification = @"NTFSDiskDisappearedNotification";

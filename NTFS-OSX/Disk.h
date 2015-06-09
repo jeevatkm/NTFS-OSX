@@ -34,7 +34,6 @@
 
 @interface Disk : NSObject {
 	CFTypeRef _diskRef;
-	NSImage *icon;
 }
 
 @property (readonly, copy) NSString *BSDName;
@@ -43,6 +42,7 @@
 @property (readonly, copy) NSString *volumeName;
 @property (nonatomic, copy) NSString *volumePath;
 @property (nonatomic) BOOL isNTFSWritable;
+@property LSSharedFileListItemRef favoriteItem;
 
 + (Disk *)getDiskForDARef:(DADiskRef)diskRef;
 + (Disk *)getDiskForUserInfo:(NSDictionary *)userInfo;
@@ -53,3 +53,4 @@
 - (void)unmount;
 
 @end
+

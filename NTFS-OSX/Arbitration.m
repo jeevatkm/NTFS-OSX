@@ -27,7 +27,7 @@
 //  Arbitration.m
 //  NTFS-OSX
 //
-//  Created by Jeevanandam Madanagopal on 6/5/15.
+//  Created by Jeevanandam M. on 6/5/15.
 //  Copyright (c) 2015 myjeeva.com. All rights reserved.
 //
 
@@ -38,10 +38,6 @@ DASessionRef session;
 DASessionRef approvalSession;
 NSMutableSet *ntfsDisks;
 
-NSString * const DADiskDescriptionVolumeKindValue = @"ntfs";
-NSString * const NTFSDiskAppearedNotification = @"NTFSDiskAppearedNotification";
-NSString * const NTFSDiskDisappearedNotification = @"NTFSDiskDisappearedNotification";
-NSString * const AppName = @"NTFSApp";
 
 void RegisterDA(void) {
 
@@ -91,7 +87,7 @@ void RegisterDA(void) {
 	// Same match condition for Approval session too
 	DARegisterDiskMountApprovalCallback(approvalSession, match, DiskMountApprovalCallback, (__bridge void *)AppName);
 
-	CFRelease(match);
+	RELEASE(match);
 }
 
 void UnregisterDA(void) {
@@ -101,7 +97,7 @@ void UnregisterDA(void) {
 		DAUnregisterCallback(session, DiskDisappearedCallback, (__bridge void *)AppName);
 
 		DASessionUnscheduleFromRunLoop(session, CFRunLoopGetMain(), kCFRunLoopCommonModes);
-		CFRelease(session);
+		RELEASE(session);
 
 		NSLog(@"Disk Arbitration Session destoryed");
 	}
@@ -111,7 +107,7 @@ void UnregisterDA(void) {
 		DAUnregisterApprovalCallback(approvalSession, DiskMountApprovalCallback, (__bridge void *)AppName);
 
 		DAApprovalSessionUnscheduleFromRunLoop(approvalSession, CFRunLoopGetMain(), kCFRunLoopCommonModes);
-		CFRelease(approvalSession);
+		RELEASE(approvalSession);
 
 		NSLog(@"Disk Arbitration Approval Session destoryed");
 	}
@@ -154,7 +150,7 @@ void DiskDescriptionChangedCallback(DADiskRef diskRef, CFArrayRef keys, void *co
 
 		NSLog(@"Updated Disk Description: %@", disk.desc);
 
-		CFRelease(newDesc);
+		RELEASE(newDesc);
 	}
 }
 

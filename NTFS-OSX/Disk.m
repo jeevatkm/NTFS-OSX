@@ -32,8 +32,6 @@
 //
 
 
-#import <IOKit/kext/KextManager.h>
-
 #import "Disk.h"
 #import "Arbitration.h"
 #import "CommandLine.h"
@@ -47,6 +45,7 @@
 @synthesize volumeUUID;
 @synthesize volumeName;
 @synthesize volumePath;
+@synthesize favoriteItem;
 
 
 #pragma mark - Public Methods
@@ -62,7 +61,7 @@
 }
 
 + (Disk *)getDiskForUserInfo:(NSDictionary *)userInfo {
-	NSString *devicePath = [userInfo objectForKey:@"NSDevicePath"];
+	NSString *devicePath = [userInfo objectForKey:NSDevicePath];
 
 	for (Disk *disk in ntfsDisks) {
 		if ([disk.volumePath isEqualToString:devicePath]) {
@@ -105,13 +104,9 @@
 }
 
 - (void)dealloc {
-	if (desc) {
-		CFRetain(desc);
-	}
-
-	if (_diskRef) {
-		CFRelease(_diskRef);
-	}
+    RELEASE(favoriteItem);
+    RELEASE(desc);
+    RELEASE(_diskRef);
 }
 
 - (void)disappeared {
@@ -119,7 +114,7 @@
 }
 
 - (void)enableNTFSWrite {
-	NSString *cmd = [NSString stringWithFormat:@"echo \"%@\" | tee -a /etc/fstab", [self ntfsConfig]];
+	NSString *cmd = [NSString stringWithFormat:@"echo \"%@\" | tee -a %@", [self ntfsConfig], FstabFile];
 
 	[STPrivilegedTask launchedPrivilegedTaskWithLaunchPath:@"/bin/sh" arguments:[NSArray arrayWithObjects: @"-c", cmd, nil]];
 	NSLog(@"NTFS write mode enabled for disk '%@'", self.volumeName);
@@ -148,7 +143,7 @@
 
 - (void)setDesc:(CFDictionaryRef)descUpdate {
 	if (descUpdate && descUpdate != desc) {
-		CFRelease(desc);
+		RELEASE(desc);
 		desc = CFRetain(descUpdate);
 	}
 }
@@ -168,17 +163,14 @@
 }
 
 - (BOOL)isNTFSWritable {
-	NSString *fstabFile = @"/etc/fstab";
-
-	BOOL status = [[NSFileManager defaultManager] fileExistsAtPath:fstabFile];
-	NSLog(@"'%@' file exists: %@", fstabFile, status ? @"YES" : @"NO");
+	BOOL status = [[NSFileManager defaultManager] fileExistsAtPath:FstabFile];
+	NSLog(@"File '%@' exists: %@", FstabFile, status ? @"YES" : @"NO");
 
 	if (status) {
-		NSString *cmd = [NSString stringWithFormat:@"grep \"%@\" %@", volumeUUID, fstabFile];
+		NSString *cmd = [NSString stringWithFormat:@"grep \"%@\" %@", volumeUUID, FstabFile];
 		NSString *output = [CommandLine run:cmd];
 		NSLog(@"output: %@", output);
 
-		//NSString *cfg = [self ntfsConfig];
 		if ([[self ntfsConfig] isEqualToString:output]) {
 			return TRUE;
 		}
