@@ -42,7 +42,7 @@
 @property (readonly, copy) NSString *volumeName;
 @property (nonatomic, copy) NSString *volumePath;
 @property (nonatomic) BOOL isNTFSWritable;
-@property LSSharedFileListItemRef favoriteItem;
+@property CFTypeRef favoriteItem;
 
 + (Disk *)getDiskForDARef:(DADiskRef)diskRef;
 + (Disk *)getDiskForUserInfo:(NSDictionary *)userInfo;

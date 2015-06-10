@@ -111,12 +111,19 @@
 
 		[[NSRunningApplication currentApplication] activateWithOptions:NSApplicationActivateIgnoringOtherApps];
 		if ([confirm runModal] == NSAlertFirstButtonReturn) {
+			[disk unmount];
+
 			[disk enableNTFSWrite];
 
-			[disk unmount];
-			//[disk performSelector:@selector(mount) withObject:nil afterDelay:1.0];
 			[disk mount];
 		}
+	}
+
+	NSString *volumePath = disk.volumePath;
+	BOOL isExits = [[NSFileManager defaultManager] fileExistsAtPath:volumePath];
+	if (isExits) {
+		NSLog(@"Opening mounted NTFS Volume '%@'", volumePath);
+		[[NSWorkspace sharedWorkspace] openURL:[NSURL fileURLWithPath:volumePath]];
 	}
 }
 
@@ -135,26 +142,26 @@
 		NSLog(@"NTFS Disk: '%@' mounted at '%@'", disk.BSDName, disk.volumePath);
 
 		disk.favoriteItem = AddPathToFinderFavorites(disk.volumePath);
-
-		//[[NSWorkspace sharedWorkspace] setIcon:disk.icon forFile:disk.volumePath options:0];
+		NSLog(@"Added path to favorties");
 	}
 
 }
 
 - (void)volumeUnmountNotification:(NSNotification *) notification {
-    Disk *disk = [Disk getDiskForUserInfo:notification.userInfo];
+	Disk *disk = [Disk getDiskForUserInfo:notification.userInfo];
 
-    if (disk) {
-        NSLog(@"NTFS Disk: '%@' mounted at '%@'", disk.BSDName, disk.volumePath);
-        
-        if (disk.favoriteItem) {
-            RemoveItemFromFinderFavorties(disk.favoriteItem);
-        }
-    }
+	if (disk) {
+		NSLog(@"NTFS Disk: '%@' unmounted from '%@'", disk.BSDName, disk.volumePath);
+
+		if (disk.favoriteItem) {
+			RemoveItemFromFinderFavorties((LSSharedFileListItemRef)disk.favoriteItem);
+			NSLog(@"Removed path from favorties");
+		}
+	}
 }
 
 - (void)toggleLaunchAtStartup:(BOOL)state {
-    SMLoginItemSetEnabled((__bridge CFStringRef)AppBundleID, state);
+	SMLoginItemSetEnabled((__bridge CFStringRef)AppBundleID, state);
 }
 
 

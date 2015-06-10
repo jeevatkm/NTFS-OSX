@@ -104,9 +104,9 @@
 }
 
 - (void)dealloc {
-	RELEASE(favoriteItem);
 	RELEASE(desc);
 	RELEASE(_diskRef);
+	RELEASE(favoriteItem);
 }
 
 - (void)disappeared {
@@ -177,6 +177,15 @@
 	return FALSE;
 }
 
+- (void)setFavoriteItem:(CFTypeRef) inFavoriteItem {
+	if (inFavoriteItem) {
+		favoriteItem = CFRetain(inFavoriteItem);
+	}
+}
+
+- (CFTypeRef) favoriteItem {
+	return favoriteItem;
+}
 
 
 #pragma mark - Private Methods
