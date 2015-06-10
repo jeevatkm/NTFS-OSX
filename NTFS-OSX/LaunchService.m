@@ -37,47 +37,18 @@
 
 LSSharedFileListItemRef AddPathToFinderFavorites(NSString *path) {
 	LSSharedFileListRef favoritesRef = GetFileListRef(kLSSharedFileListFavoriteItems);
-    
-	//UInt32 seed;
-	//CFArrayRef items = LSSharedFileListCopySnapshot(favoritesRef, &seed);
 
-	//NSLog(@"Items :: %@", items);
-	//BOOL found = FALSE;
 	CFURLRef url = (__bridge CFURLRef)[NSURL fileURLWithPath:path];
-	/* for(size_t i = 0; i < CFArrayGetCount(items); i++) {
-		LSSharedFileListItemRef item = (LSSharedFileListItemRef)CFArrayGetValueAtIndex(items, i);
-		if(!item) { continue; }
-
-		CFURLRef outURL = NULL;
-		LSSharedFileListItemResolve(item, kLSSharedFileListNoUserInteraction, (CFURLRef *) &outURL, NULL); //kLSSharedFileListDoNotMountVolumes
-		if(!outURL) {  continue; }
-
-		// Path string of the favorites item
-		//CFStringRef itemPath = CFURLCopyFileSystemPath(outURL, kCFURLPOSIXPathStyle);
-		found = CFEqual(url, outURL);
-
-		//NSLog(@"Found: %hhd, itemPath :: %@", found, itemPath);
-
-		CFRelease(outURL);
-		//CFRelease(itemPath);
-
-		if (found) {
-			break;
-		}
-	} */
-
-    LSSharedFileListItemRef item = InsertItemURL(favoritesRef, kLSSharedFileListItemLast, url);
-	/*if (favoritesRef && !found) {
-		item = InsertItemURL(favoritesRef, kLSSharedFileListItemLast, url);
-	} */
+	LSSharedFileListItemRef item = InsertItemURL(favoritesRef, kLSSharedFileListItemLast, url);
 
 	RELEASE(favoritesRef);
-    
-    return item;
+	RELEASE(url);
+
+	return item;
 }
 
 OSStatus RemoveItemFromFinderFavorties(LSSharedFileListItemRef item) {
-    return RemoveItemFromList(GetFileListRef(kLSSharedFileListFavoriteItems), item);
+	return RemoveItemFromList(GetFileListRef(kLSSharedFileListFavoriteItems), item);
 }
 
 
@@ -94,15 +65,15 @@ LSSharedFileListItemRef InsertItemURL(LSSharedFileListRef inList,
 }
 
 OSStatus RemoveItemFromList(LSSharedFileListRef inList, LSSharedFileListItemRef item) {
-    OSStatus status = LSSharedFileListItemRemove(inList, item);
-    NSLog(@"RemoveItemFromList Status: %d", (int)status);
-    
-    return status;
+	OSStatus status = LSSharedFileListItemRemove(inList, item);
+	NSLog(@"RemoveItemFromList Status: %d", (int)status);
+
+	return status;
 }
 
 CFArrayRef GetFileListCopy(LSSharedFileListRef list) {
-    UInt32 seed;
-    return LSSharedFileListCopySnapshot(list, &seed);
+	UInt32 seed;
+	return LSSharedFileListCopySnapshot(list, &seed);
 }
 
 @end

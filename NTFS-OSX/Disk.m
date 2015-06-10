@@ -104,9 +104,9 @@
 }
 
 - (void)dealloc {
-    RELEASE(favoriteItem);
-    RELEASE(desc);
-    RELEASE(_diskRef);
+	RELEASE(favoriteItem);
+	RELEASE(desc);
+	RELEASE(_diskRef);
 }
 
 - (void)disappeared {
@@ -121,13 +121,11 @@
 }
 
 - (void)mount {
-	NSString *cmd = [NSString stringWithFormat:@"diskutil mount /dev/%@", self.BSDName];
-	[CommandLine run:cmd];
+	[CommandLine run:[NSString stringWithFormat:@"diskutil mount /dev/%@", self.BSDName]];
 }
 
 - (void)unmount {
-	NSString *cmd = [NSString stringWithFormat:@"diskutil unmount /dev/%@", self.BSDName];
-	[CommandLine run:cmd];
+	[CommandLine run:[NSString stringWithFormat:@"diskutil unmount /dev/%@", self.BSDName]];
 }
 
 

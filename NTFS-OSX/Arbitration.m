@@ -118,25 +118,33 @@ void UnregisterDA(void) {
 
 BOOL Validate(DADiskRef diskRef) {
 
+	if (DADiskGetBSDName(diskRef) == NULL) {
+		[NSException raise:NSInternalInconsistencyException format:@"NTFS Disk without BSDName"];
+	}
+
 	return TRUE;
 }
 
 void DiskAppearedCallback(DADiskRef diskRef, void *context) {
 	NSLog(@"DiskAppearedCallback called: %s", DADiskGetBSDName(diskRef));
 
-	Disk *disk = [[Disk alloc] initWithDADiskRef:diskRef];
-	NSLog(@"Name: %@ \tUUID: %@", disk.volumeName, disk.volumeUUID);
+	if (Validate(diskRef)) {
+		Disk *disk = [[Disk alloc] initWithDADiskRef:diskRef];
+		NSLog(@"Name: %@ \tUUID: %@", disk.volumeName, disk.volumeUUID);
 
-	[[NSNotificationCenter defaultCenter] postNotificationName:NTFSDiskAppearedNotification object:disk];
+		[[NSNotificationCenter defaultCenter] postNotificationName:NTFSDiskAppearedNotification object:disk];
+	}
 }
 
 void DiskDisappearedCallback(DADiskRef diskRef, void *context) {
 	NSLog(@"DiskDisappearedCallback called: %s", DADiskGetBSDName(diskRef));
 
-	Disk *disk = [Disk getDiskForDARef:diskRef];
-	NSLog(@"Name: %@ \tUUID: %@", disk.volumeName, disk.volumeUUID);
+	if (Validate(diskRef)) {
+		Disk *disk = [Disk getDiskForDARef:diskRef];
+		NSLog(@"Name: %@ \tUUID: %@", disk.volumeName, disk.volumeUUID);
 
-	[[NSNotificationCenter defaultCenter] postNotificationName:NTFSDiskDisappearedNotification object:disk];
+		[[NSNotificationCenter defaultCenter] postNotificationName:NTFSDiskDisappearedNotification object:disk];
+	}
 }
 
 void DiskDescriptionChangedCallback(DADiskRef diskRef, CFArrayRef keys, void *context) {
@@ -157,8 +165,10 @@ void DiskDescriptionChangedCallback(DADiskRef diskRef, CFArrayRef keys, void *co
 DADissenterRef DiskMountApprovalCallback(DADiskRef diskRef, void *context) {
 	NSLog(@"DiskMountApprovalCallback called: %s", DADiskGetBSDName(diskRef));
 
-	Disk *disk = [[Disk alloc] initWithDADiskRef:diskRef];
-	NSLog(@"Name: %@ \tUUID: %@", disk.volumeName, disk.volumeUUID);
+	if (Validate(diskRef)) {
+		Disk *disk = [[Disk alloc] initWithDADiskRef:diskRef];
+		NSLog(@"Name: %@ \tUUID: %@", disk.volumeName, disk.volumeUUID);
+	}
 
-	return NULL; // for all disks
+	return NULL;
 }

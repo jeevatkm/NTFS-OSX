@@ -35,15 +35,15 @@
 
 @implementation NSString (NTFS_OSX)
 
-- (BOOL)isBlank
-{
-	if([[self trim] isEqualToString:@""])
-		return YES;
-	return NO;
+- (BOOL)isBlank {
+	if([[self trim] isEqualToString:@""]) {
+		return TRUE;
+	}
+
+	return FALSE;
 }
 
-- (NSString *)trim
-{
+- (NSString *)trim {
 	return [self stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 }
 
