@@ -35,7 +35,7 @@
 
 NSString * const AppName = @"NTFS-OSX";
 NSString * const AppBundleID = @"com.myjeeva.NTFS-OSX";
-NSString * const AppStatusBarIconName = @"ntfs_osx.png";
+NSString * const AppStatusBarIconName = @"ntfs_osx_small.png";
 
 NSString * const FstabFile = @"/etc/fstab";
 

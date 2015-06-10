@@ -22,6 +22,7 @@
 		9C1DA1871B26597000B596CB /* LaunchService.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C1DA1861B26597000B596CB /* LaunchService.m */; };
 		9C5A30091B28D9B300BE77C2 /* ProgressController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C5A30071B28D9B300BE77C2 /* ProgressController.m */; };
 		9C5A300A1B28D9B300BE77C2 /* ProgressController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9C5A30081B28D9B300BE77C2 /* ProgressController.xib */; };
+		9C5A30121B28FFD100BE77C2 /* ntfs_osx_small.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C5A30111B28FFD100BE77C2 /* ntfs_osx_small.png */; };
 		9C8CA2A81B275AF5009D4DA5 /* ServiceManagement.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C8CA2A71B275AF5009D4DA5 /* ServiceManagement.framework */; };
 		9CC369F21B27719E002D535B /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CC369F11B27719E002D535B /* Constants.m */; };
 		9CEDC63A1B2250DD0008E929 /* Disk.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CEDC6391B2250DD0008E929 /* Disk.m */; };
@@ -67,6 +68,7 @@
 		9C5A30061B28D9B300BE77C2 /* ProgressController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProgressController.h; sourceTree = "<group>"; };
 		9C5A30071B28D9B300BE77C2 /* ProgressController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProgressController.m; sourceTree = "<group>"; };
 		9C5A30081B28D9B300BE77C2 /* ProgressController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProgressController.xib; sourceTree = "<group>"; };
+		9C5A30111B28FFD100BE77C2 /* ntfs_osx_small.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ntfs_osx_small.png; sourceTree = "<group>"; };
 		9C8CA2A71B275AF5009D4DA5 /* ServiceManagement.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ServiceManagement.framework; path = System/Library/Frameworks/ServiceManagement.framework; sourceTree = SDKROOT; };
 		9CC369F01B27719E002D535B /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 		9CC369F11B27719E002D535B /* Constants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Constants.m; sourceTree = "<group>"; };
@@ -197,6 +199,7 @@
 		13CDB3C41B1FF8F000A8A374 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				9C5A30111B28FFD100BE77C2 /* ntfs_osx_small.png */,
 				13CDB3C91B1FFD4E00A8A374 /* ntfs_osx.png */,
 				13CDB3A41B1FF08D00A8A374 /* Info.plist */,
 				13CDB3AA1B1FF08D00A8A374 /* Images.xcassets */,
@@ -298,6 +301,7 @@
 				13CDB3CA1B1FFD4E00A8A374 /* ntfs_osx.png in Resources */,
 				13CDB3AB1B1FF08D00A8A374 /* Images.xcassets in Resources */,
 				13CDB3AE1B1FF08D00A8A374 /* MainMenu.xib in Resources */,
+				9C5A30121B28FFD100BE77C2 /* ntfs_osx_small.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
