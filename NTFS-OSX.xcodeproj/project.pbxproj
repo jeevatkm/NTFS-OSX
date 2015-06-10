@@ -20,6 +20,8 @@
 		13CDB3C71B1FFA2D00A8A374 /* NTFSApp.m in Sources */ = {isa = PBXBuildFile; fileRef = 13CDB3C61B1FFA2D00A8A374 /* NTFSApp.m */; };
 		13CDB3CA1B1FFD4E00A8A374 /* ntfs_osx.png in Resources */ = {isa = PBXBuildFile; fileRef = 13CDB3C91B1FFD4E00A8A374 /* ntfs_osx.png */; };
 		9C1DA1871B26597000B596CB /* LaunchService.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C1DA1861B26597000B596CB /* LaunchService.m */; };
+		9C5A30091B28D9B300BE77C2 /* ProgressController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C5A30071B28D9B300BE77C2 /* ProgressController.m */; };
+		9C5A300A1B28D9B300BE77C2 /* ProgressController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9C5A30081B28D9B300BE77C2 /* ProgressController.xib */; };
 		9C8CA2A81B275AF5009D4DA5 /* ServiceManagement.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C8CA2A71B275AF5009D4DA5 /* ServiceManagement.framework */; };
 		9CC369F21B27719E002D535B /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CC369F11B27719E002D535B /* Constants.m */; };
 		9CEDC63A1B2250DD0008E929 /* Disk.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CEDC6391B2250DD0008E929 /* Disk.m */; };
@@ -62,6 +64,9 @@
 		13CDB3C91B1FFD4E00A8A374 /* ntfs_osx.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ntfs_osx.png; sourceTree = "<group>"; };
 		9C1DA1851B26597000B596CB /* LaunchService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LaunchService.h; sourceTree = "<group>"; };
 		9C1DA1861B26597000B596CB /* LaunchService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LaunchService.m; sourceTree = "<group>"; };
+		9C5A30061B28D9B300BE77C2 /* ProgressController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProgressController.h; sourceTree = "<group>"; };
+		9C5A30071B28D9B300BE77C2 /* ProgressController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProgressController.m; sourceTree = "<group>"; };
+		9C5A30081B28D9B300BE77C2 /* ProgressController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProgressController.xib; sourceTree = "<group>"; };
 		9C8CA2A71B275AF5009D4DA5 /* ServiceManagement.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ServiceManagement.framework; path = System/Library/Frameworks/ServiceManagement.framework; sourceTree = SDKROOT; };
 		9CC369F01B27719E002D535B /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 		9CC369F11B27719E002D535B /* Constants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Constants.m; sourceTree = "<group>"; };
@@ -182,6 +187,9 @@
 				9C1DA1861B26597000B596CB /* LaunchService.m */,
 				9CC369F01B27719E002D535B /* Constants.h */,
 				9CC369F11B27719E002D535B /* Constants.m */,
+				9C5A30061B28D9B300BE77C2 /* ProgressController.h */,
+				9C5A30071B28D9B300BE77C2 /* ProgressController.m */,
+				9C5A30081B28D9B300BE77C2 /* ProgressController.xib */,
 			);
 			name = Source;
 			sourceTree = "<group>";
@@ -286,6 +294,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9C5A300A1B28D9B300BE77C2 /* ProgressController.xib in Resources */,
 				13CDB3CA1B1FFD4E00A8A374 /* ntfs_osx.png in Resources */,
 				13CDB3AB1B1FF08D00A8A374 /* Images.xcassets in Resources */,
 				13CDB3AE1B1FF08D00A8A374 /* MainMenu.xib in Resources */,
@@ -306,6 +315,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9C5A30091B28D9B300BE77C2 /* ProgressController.m in Sources */,
 				9CC369F21B27719E002D535B /* Constants.m in Sources */,
 				13824BCD1B21DD2F00EEE019 /* Arbitration.m in Sources */,
 				13CDB3A91B1FF08D00A8A374 /* main.m in Sources */,

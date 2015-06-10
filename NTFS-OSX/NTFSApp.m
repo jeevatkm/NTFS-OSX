@@ -35,6 +35,7 @@
 #import "Arbitration.h"
 #import "Disk.h"
 #import "LaunchService.h"
+#import "ProgressController.h"
 
 @import ServiceManagement;
 
@@ -43,9 +44,7 @@
 @synthesize statusItem;
 
 - (id)init {
-	self = [super init];
-
-	if (self) {
+	if (self = [super init]) {
 		// Initializing Status Bar and Menus
 		[self initStatusBar];
 
@@ -54,6 +53,8 @@
 
 		// App & Workspace Notification
 		[self registerSession];
+        
+        progressWindow = [ProgressController new];
 	}
 
 	return self;
@@ -109,15 +110,26 @@
 		[confirm setAlertStyle:NSWarningAlertStyle];
 		[confirm setIcon:[NSApp applicationIconImage]];
 
-		[[NSRunningApplication currentApplication] activateWithOptions:NSApplicationActivateIgnoringOtherApps];
+        [self bringToFront];
 		if ([confirm runModal] == NSAlertFirstButtonReturn) {
-			[disk unmount];
+            [progressWindow show];
+			
+            [progressWindow statusText:[NSString stringWithFormat:@"Disk '%@' unmounting...", disk.volumeName]];
+            [disk unmount];
+            [progressWindow incrementProgressBar:30.0];
 
+            [progressWindow statusText:@"Enabling Write mode..."];
 			[disk enableNTFSWrite];
+            [progressWindow incrementProgressBar:30.0];
 
-			[disk mount];
+            [progressWindow statusText:[NSString stringWithFormat:@"Disk '%@' mounting...", disk.volumeName]];
+			[disk mount];            
+            [progressWindow incrementProgressBar:30.0];
 		}
 	}
+    
+    [progressWindow statusText:@"Opening mounted volume!"];
+    [progressWindow close];
 
 	NSString *volumePath = disk.volumePath;
 	BOOL isExits = [[NSFileManager defaultManager] fileExistsAtPath:volumePath];
@@ -221,6 +233,10 @@
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 
 	[[[NSWorkspace sharedWorkspace] notificationCenter] removeObserver:self];
+}
+
+- (void)bringToFront {
+    [[NSRunningApplication currentApplication] activateWithOptions:NSApplicationActivateIgnoringOtherApps];
 }
 
 @end

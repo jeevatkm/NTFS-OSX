@@ -31,8 +31,10 @@
 //  Copyright (c) 2015 myjeeva.com. All rights reserved.
 //
 
+@class ProgressController;
 
 @interface NTFSApp : NSObject {
+    ProgressController *progressWindow;
 }
 
 @property(strong, nonatomic) NSStatusItem *statusItem;
