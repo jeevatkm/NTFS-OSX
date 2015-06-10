@@ -33,7 +33,6 @@
 
 #import "LaunchService.h"
 
-@implementation LaunchService
 
 LSSharedFileListItemRef AddPathToFinderFavorites(NSString *path) {
 	LSSharedFileListRef favoritesRef = GetFileListRef(kLSSharedFileListFavoriteItems);
@@ -49,6 +48,56 @@ LSSharedFileListItemRef AddPathToFinderFavorites(NSString *path) {
 
 OSStatus RemoveItemFromFinderFavorties(LSSharedFileListItemRef item) {
 	return RemoveItemFromList(GetFileListRef(kLSSharedFileListFavoriteItems), item);
+}
+
+BOOL IsAppLaunchOnLogin(void) {
+    LSSharedFileListRef loginItemsListRef = GetFileListRef(kLSSharedFileListSessionLoginItems);
+    
+    CFArrayRef snapshotRef = GetFileListCopy(loginItemsListRef);
+    NSArray* loginItems = CFBridgingRelease(snapshotRef);
+    
+    NSURL *bundleURL = AppBundleURL;
+    for (id item in loginItems) {
+        LSSharedFileListItemRef itemRef = (__bridge LSSharedFileListItemRef)item;
+        CFURLRef itemURLRef;
+        if (LSSharedFileListItemResolve(itemRef, 0, &itemURLRef, NULL) == noErr) {
+            NSURL *itemURL = (__bridge NSURL *)itemURLRef;
+            if ([itemURL isEqual:bundleURL]) {
+                return YES;
+            }
+        }
+    }
+    return NO;
+}
+
+void ToggleAppLaunchOnLogin(BOOL launch) {
+    NSURL *bundleURL = AppBundleURL;
+    LSSharedFileListRef loginItemsListRef = GetFileListRef(kLSSharedFileListSessionLoginItems);
+    
+    if (launch) {
+        NSDictionary *properties = @{(AppBundleID): @YES};
+        LSSharedFileListItemRef itemRef = LSSharedFileListInsertItemURL(loginItemsListRef,
+                                                                        kLSSharedFileListItemLast,
+                                                                        NULL, NULL,
+                                                                        (__bridge CFURLRef)bundleURL,
+                                                                        (__bridge CFDictionaryRef)properties,
+                                                                        NULL);
+        RELEASE(itemRef);
+    } else {
+        CFArrayRef snapshotRef = LSSharedFileListCopySnapshot(loginItemsListRef, NULL);
+        NSArray* loginItems = CFBridgingRelease(snapshotRef);
+        
+        for (id item in loginItems) {
+            LSSharedFileListItemRef itemRef = (__bridge LSSharedFileListItemRef)item;
+            CFURLRef itemURLRef;
+            if (LSSharedFileListItemResolve(itemRef, 0, &itemURLRef, NULL) == noErr) {
+                NSURL *itemURL = (__bridge NSURL *)itemURLRef;
+                if ([itemURL isEqual:bundleURL]) {
+                    RemoveItemFromList(loginItemsListRef, itemRef);
+                }
+            }
+        }
+    }
 }
 
 
@@ -72,8 +121,5 @@ OSStatus RemoveItemFromList(LSSharedFileListRef inList, LSSharedFileListItemRef 
 }
 
 CFArrayRef GetFileListCopy(LSSharedFileListRef list) {
-	UInt32 seed;
-	return LSSharedFileListCopySnapshot(list, &seed);
+	return LSSharedFileListCopySnapshot(list, NULL);
 }
-
-@end

@@ -46,3 +46,4 @@
 #endif
 
 #define RELEASE(typeRef) if (typeRef) { CFRelease((typeRef)); }
+#define AppBundleURL [NSURL fileURLWithPath:[[NSBundle mainBundle] bundlePath]]

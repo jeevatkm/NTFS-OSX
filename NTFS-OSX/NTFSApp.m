@@ -55,6 +55,8 @@
 		[self registerSession];
         
         progressWindow = [ProgressController new];
+        
+        NSLog(@"Is NTFS OS X App launch on login: %@", IsAppLaunchOnLogin() ? @"YES" : @"NO");
 	}
 
 	return self;
