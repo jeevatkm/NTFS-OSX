@@ -39,6 +39,4 @@
 
 @property(strong, nonatomic) NSStatusItem *statusItem;
 
-- (void)toggleLaunchAtStartup:(BOOL)state;
-
 @end

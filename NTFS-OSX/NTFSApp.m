@@ -75,8 +75,14 @@
 
 #pragma mark - Status Menu Methods
 
-- (void)prefMenuClicked:(id)sender {
-	NSLog(@"prefMenuClicked: %@", sender);
+- (void)launchAtLoginMenuClicked:(id)sender {
+	NSMenuItem *clickMenu = (NSMenuItem *)sender;
+
+	if ([clickMenu state]) {
+		NSLog(@"True sender state %ld", [clickMenu state]);
+	} else {
+		NSLog(@"False sender state %ld", [clickMenu state]);
+	}
 }
 
 - (void)btcMenuClicked:(id)sender {
@@ -212,7 +218,17 @@
 - (void)initStatusBar {
 	NSMenu *statusMenu = [[NSMenu alloc] init];
 
-	[[statusMenu addItemWithTitle:@"Preferences" action:@selector(prefMenuClicked:) keyEquivalent:@""] setTarget:self];
+	//[[statusMenu addItemWithTitle:@"Preferences" action:@selector(prefMenuClicked:) keyEquivalent:@""] setTarget:self];
+
+	NSMenuItem *prefsMenuItem = [NSMenuItem new];
+	[prefsMenuItem setTitle:@"Preferences"];
+
+	NSMenu *prefSubmenu = [NSMenu new];
+	[[prefSubmenu addItemWithTitle:@"Launch at Login" action:@selector(launchAtLoginMenuClicked:) keyEquivalent:@""] setTarget:self];
+
+	[prefsMenuItem setSubmenu:prefSubmenu];
+	[statusMenu addItem:prefsMenuItem];
+
 	[statusMenu addItem:[NSMenuItem separatorItem]];
 
 	NSMenuItem *donateMenuItem = [NSMenuItem new];
@@ -222,8 +238,8 @@
 	[[donateSubmenu addItemWithTitle:@"Paypal" action:@selector(paypalMenuClicked:) keyEquivalent:@""] setTarget:self];
 	[[donateSubmenu addItemWithTitle:@"BTC 1KaNKjmAFRhM5Q8aP5QWb1QTEYdGH11mZg" action:@selector(btcMenuClicked:) keyEquivalent:@""]  setTarget:self];
 	[donateMenuItem setSubmenu:donateSubmenu];
-
 	[statusMenu addItem:donateMenuItem];
+
 	[[statusMenu addItemWithTitle:@"Support" action:@selector(supportMenuClicked:) keyEquivalent:@""] setTarget:self];
 	[statusMenu addItem:[NSMenuItem separatorItem]];
 	[[statusMenu addItemWithTitle:@"Quit" action:@selector(quitMenuClicked:) keyEquivalent:@""] setTarget:self];
