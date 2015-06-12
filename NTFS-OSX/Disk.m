@@ -104,9 +104,9 @@
 }
 
 - (void)dealloc {
-	RELEASE(desc);
-	RELEASE(_diskRef);
-	RELEASE(favoriteItem);
+	Release(desc);
+	Release(_diskRef);
+	Release(favoriteItem);
 }
 
 - (void)disappeared {
@@ -141,7 +141,7 @@
 
 - (void)setDesc:(CFDictionaryRef)descUpdate {
 	if (descUpdate && descUpdate != desc) {
-		RELEASE(desc);
+		Release(desc);
 		desc = CFRetain(descUpdate);
 	}
 }

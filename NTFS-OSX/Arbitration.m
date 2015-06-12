@@ -87,7 +87,7 @@ void RegisterDA(void) {
 	// Same match condition for Approval session too
 	DARegisterDiskMountApprovalCallback(approvalSession, match, DiskMountApprovalCallback, (__bridge void *)AppName);
 
-	RELEASE(match);
+	Release(match);
 }
 
 void UnregisterDA(void) {
@@ -97,7 +97,7 @@ void UnregisterDA(void) {
 		DAUnregisterCallback(session, DiskDisappearedCallback, (__bridge void *)AppName);
 
 		DASessionUnscheduleFromRunLoop(session, CFRunLoopGetMain(), kCFRunLoopCommonModes);
-		RELEASE(session);
+		Release(session);
 
 		NSLog(@"Disk Arbitration Session destoryed");
 	}
@@ -107,7 +107,7 @@ void UnregisterDA(void) {
 		DAUnregisterApprovalCallback(approvalSession, DiskMountApprovalCallback, (__bridge void *)AppName);
 
 		DAApprovalSessionUnscheduleFromRunLoop(approvalSession, CFRunLoopGetMain(), kCFRunLoopCommonModes);
-		RELEASE(approvalSession);
+		Release(approvalSession);
 
 		NSLog(@"Disk Arbitration Approval Session destoryed");
 	}
@@ -158,7 +158,7 @@ void DiskDescriptionChangedCallback(DADiskRef diskRef, CFArrayRef keys, void *co
 
 		NSLog(@"Updated Disk Description: %@", disk.desc);
 
-		RELEASE(newDesc);
+		Release(newDesc);
 	}
 }
 
