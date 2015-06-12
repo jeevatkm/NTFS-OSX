@@ -53,10 +53,12 @@
 
 		// App & Workspace Notification
 		[self registerSession];
-        
-        progressWindow = [ProgressController new];
-        
-        NSLog(@"Is NTFS OS X App launch on login: %@", IsAppLaunchOnLogin() ? @"YES" : @"NO");
+
+		//progressWindow = [ProgressController new];
+
+		[[NSUserNotificationCenter defaultUserNotificationCenter] setDelegate:self];
+
+		NSLog(@"Is NTFS OS X App launch on login: %@", IsAppLaunchOnLogin() ? @"YES" : @"NO");
 	}
 
 	return self;
@@ -77,12 +79,37 @@
 	NSLog(@"prefMenuClicked: %@", sender);
 }
 
-- (void)donateMenuClicked:(id)sender {
-	NSLog(@"donateMenuClicked: %@", sender);
+- (void)btcMenuClicked:(id)sender {
+	NSString *btcAddress = @"1KaNKjmAFRhM5Q8aP5QWb1QTEYdGH11mZg";
+
+	[[NSPasteboard generalPasteboard] clearContents];
+	[[NSPasteboard generalPasteboard] setString:btcAddress forType:NSStringPboardType];
+
+	if (floor(NSAppKitVersionNumber) >= NSAppKitVersionNumber10_8) {
+		NSUserNotification *userNotify = [NSUserNotification new];
+		userNotify.title = AppDisplayName;
+		userNotify.informativeText = @"BTC address copied.";
+		userNotify.soundName = NSUserNotificationDefaultSoundName;
+		[[NSUserNotificationCenter defaultUserNotificationCenter] deliverNotification:userNotify];
+	} else {
+		NSAlert *userNotify = [NSAlert new];
+		[userNotify addButtonWithTitle:@"Okay"];
+		[userNotify setMessageText:AppDisplayName];
+		[userNotify setInformativeText:[NSString stringWithFormat:@"BTC address '%@' copied.", btcAddress]];
+		[userNotify setAlertStyle:NSInformationalAlertStyle];
+		[userNotify setIcon:[NSApp applicationIconImage]];
+
+		[self bringToFront];
+		[userNotify runModal];
+	}
+}
+
+- (void)paypalMenuClicked:(id)sender {
+	OpenUrl(@"https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=QWMZG74FW4QYC&lc=US&item_name=Jeevanandam%20M%2e&item_number=NTFS%20OS%20X&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted");
 }
 
 - (void)supportMenuClicked:(id)sender {
-	NSLog(@"supportMenuClicked: %@", sender);
+	OpenUrl(@"https://github.com/jeevatkm/NTFS-OSX/issues");
 }
 
 - (void)quitMenuClicked:(id)sender {
@@ -104,7 +131,7 @@
 		NSString *msgText = [NSString stringWithFormat:@"Disk detected: %@", disk.volumeName];
 		//NSString *infoText = [NSString stringWithFormat:@"Would you like to enable NTFS write mode for disk '%@'", disk.volumeName];
 
-		NSAlert *confirm = [[NSAlert alloc] init];
+		NSAlert *confirm = [NSAlert new];
 		[confirm addButtonWithTitle:@"Enable"];
 		[confirm addButtonWithTitle:@"Not Required"];
 		[confirm setMessageText:msgText];
@@ -112,26 +139,26 @@
 		[confirm setAlertStyle:NSWarningAlertStyle];
 		[confirm setIcon:[NSApp applicationIconImage]];
 
-        [self bringToFront];
+		[self bringToFront];
 		if ([confirm runModal] == NSAlertFirstButtonReturn) {
-            [progressWindow show];
-			
-            [progressWindow statusText:[NSString stringWithFormat:@"Disk '%@' unmounting...", disk.volumeName]];
-            [disk unmount];
-            [progressWindow incrementProgressBar:30.0];
+			//[progressWindow show];
 
-            [progressWindow statusText:@"Enabling Write mode..."];
+			//[progressWindow statusText:[NSString stringWithFormat:@"Disk '%@' unmounting...", disk.volumeName]];
+			[disk unmount];
+			//[progressWindow incrementProgressBar:30.0];
+
+			//[progressWindow statusText:@"Enabling Write mode..."];
 			[disk enableNTFSWrite];
-            [progressWindow incrementProgressBar:30.0];
+			//[progressWindow incrementProgressBar:30.0];
 
-            [progressWindow statusText:[NSString stringWithFormat:@"Disk '%@' mounting...", disk.volumeName]];
-			[disk mount];            
-            [progressWindow incrementProgressBar:30.0];
+			//[progressWindow statusText:[NSString stringWithFormat:@"Disk '%@' mounting...", disk.volumeName]];
+			[disk mount];
+			//[progressWindow incrementProgressBar:30.0];
 		}
 	}
-    
-    [progressWindow statusText:@"Opening mounted volume!"];
-    [progressWindow close];
+
+	//[progressWindow statusText:@"Opening mounted volume!"];
+	//[progressWindow close];
 
 	NSString *volumePath = disk.volumePath;
 	BOOL isExits = [[NSFileManager defaultManager] fileExistsAtPath:volumePath];
@@ -174,9 +201,10 @@
 	}
 }
 
-- (void)toggleLaunchAtStartup:(BOOL)state {
-	SMLoginItemSetEnabled((__bridge CFStringRef)AppBundleID, state);
+- (BOOL)userNotificationCenter:(NSUserNotificationCenter *)center shouldPresentNotification:(NSUserNotification *)notification {
+	return YES;
 }
+
 
 
 #pragma mark - Private Methods
@@ -184,29 +212,21 @@
 - (void)initStatusBar {
 	NSMenu *statusMenu = [[NSMenu alloc] init];
 
-	NSMenuItem *prefMenuItem = [[NSMenuItem alloc] initWithTitle:@"Preferences"
-	                            action:@selector(prefMenuClicked:)
-	                            keyEquivalent:@""];
-	NSMenuItem *donateMenuItem = [[NSMenuItem alloc] initWithTitle:@"Donate"
-	                              action:@selector(donateMenuClicked:)
-	                              keyEquivalent:@""];
-	NSMenuItem *supportMenuItem = [[NSMenuItem alloc] initWithTitle:@"Support"
-	                               action:@selector(supportMenuClicked:)
-	                               keyEquivalent:@""];
-	NSMenuItem *quitMenuIteam = [[NSMenuItem alloc] initWithTitle:@"Quit"
-	                             action:@selector(quitMenuClicked:)
-	                             keyEquivalent:@""];
-	prefMenuItem.target = self;
-	donateMenuItem.target = self;
-	supportMenuItem.target = self;
-	quitMenuIteam.target = self;
+	[[statusMenu addItemWithTitle:@"Preferences" action:@selector(prefMenuClicked:) keyEquivalent:@""] setTarget:self];
+	[statusMenu addItem:[NSMenuItem separatorItem]];
 
-	[statusMenu addItem:prefMenuItem];
-	[statusMenu addItem:[NSMenuItem separatorItem]];
+	NSMenuItem *donateMenuItem = [NSMenuItem new];
+	[donateMenuItem setTitle:@"Donate"];
+
+	NSMenu *donateSubmenu = [NSMenu new];
+	[[donateSubmenu addItemWithTitle:@"Paypal" action:@selector(paypalMenuClicked:) keyEquivalent:@""] setTarget:self];
+	[[donateSubmenu addItemWithTitle:@"BTC 1KaNKjmAFRhM5Q8aP5QWb1QTEYdGH11mZg" action:@selector(btcMenuClicked:) keyEquivalent:@""]  setTarget:self];
+	[donateMenuItem setSubmenu:donateSubmenu];
+
 	[statusMenu addItem:donateMenuItem];
-	[statusMenu addItem:supportMenuItem];
+	[[statusMenu addItemWithTitle:@"Support" action:@selector(supportMenuClicked:) keyEquivalent:@""] setTarget:self];
 	[statusMenu addItem:[NSMenuItem separatorItem]];
-	[statusMenu addItem:quitMenuIteam];
+	[[statusMenu addItemWithTitle:@"Quit" action:@selector(quitMenuClicked:) keyEquivalent:@""] setTarget:self];
 
 	statusItem = [[NSStatusBar systemStatusBar] statusItemWithLength:NSSquareStatusItemLength];
 	statusItem.highlightMode = YES;
@@ -238,7 +258,7 @@
 }
 
 - (void)bringToFront {
-    [[NSRunningApplication currentApplication] activateWithOptions:NSApplicationActivateIgnoringOtherApps];
+	[[NSRunningApplication currentApplication] activateWithOptions:NSApplicationActivateIgnoringOtherApps];
 }
 
 @end

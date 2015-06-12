@@ -32,6 +32,7 @@
 //
 
 extern NSString * const AppName;
+extern NSString * const AppDisplayName;
 extern NSString * const AppBundleID;
 extern NSString * const AppStatusBarIconName;
 

@@ -34,8 +34,9 @@
 #import "Constants.h"
 
 NSString * const AppName = @"NTFS-OSX";
+NSString * const AppDisplayName = @"NTFS OS X";
 NSString * const AppBundleID = @"com.myjeeva.NTFS-OSX";
-NSString * const AppStatusBarIconName = @"ntfs_osx_small.png";
+NSString * const AppStatusBarIconName = @"ntfs_osx.png";
 
 NSString * const FstabFile = @"/etc/fstab";
 

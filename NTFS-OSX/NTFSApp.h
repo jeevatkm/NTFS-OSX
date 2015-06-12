@@ -33,8 +33,8 @@
 
 @class ProgressController;
 
-@interface NTFSApp : NSObject {
-    ProgressController *progressWindow;
+@interface NTFSApp : NSObject<NSUserNotificationCenterDelegate> {
+	ProgressController *progressWindow;
 }
 
 @property(strong, nonatomic) NSStatusItem *statusItem;
