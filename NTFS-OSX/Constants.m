@@ -45,3 +45,5 @@ NSString * const DADiskDescriptionVolumeKindValue = @"ntfs";
 
 NSString * const NTFSDiskAppearedNotification = @"NTFSDiskAppearedNotification";
 NSString * const NTFSDiskDisappearedNotification = @"NTFSDiskDisappearedNotification";
+
+NSString * const PrefsLaunchAtLogin = @"LaunchAtLogin";

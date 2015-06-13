@@ -58,7 +58,8 @@
 
 		[[NSUserNotificationCenter defaultUserNotificationCenter] setDelegate:self];
 
-		NSLog(@"Is NTFS OS X App launch on login: %@", IsAppLaunchOnLogin() ? @"YES" : @"NO");
+		[self registarDefaults];
+		NSLog(@"Is NTFS OS X App launch on login: %@", GetDefaultInt(PrefsLaunchAtLogin) ? @"YES" : @"NO");
 	}
 
 	return self;
@@ -76,12 +77,14 @@
 #pragma mark - Status Menu Methods
 
 - (void)launchAtLoginMenuClicked:(id)sender {
-	NSMenuItem *clickMenu = (NSMenuItem *)sender;
+	NSMenuItem *launchAtLoginMenu = (NSMenuItem *)sender;
 
-	if ([clickMenu state]) {
-		NSLog(@"True sender state %ld", [clickMenu state]);
+	if ([launchAtLoginMenu state]) {
+		[launchAtLoginMenu setState:NSOffState];
+		SetDefaultInt(NO, PrefsLaunchAtLogin);
 	} else {
-		NSLog(@"False sender state %ld", [clickMenu state]);
+		[launchAtLoginMenu setState:NSOnState];
+		SetDefaultInt(YES, PrefsLaunchAtLogin);
 	}
 }
 
@@ -218,13 +221,20 @@
 - (void)initStatusBar {
 	NSMenu *statusMenu = [[NSMenu alloc] init];
 
-	//[[statusMenu addItemWithTitle:@"Preferences" action:@selector(prefMenuClicked:) keyEquivalent:@""] setTarget:self];
-
 	NSMenuItem *prefsMenuItem = [NSMenuItem new];
 	[prefsMenuItem setTitle:@"Preferences"];
 
 	NSMenu *prefSubmenu = [NSMenu new];
-	[[prefSubmenu addItemWithTitle:@"Launch at Login" action:@selector(launchAtLoginMenuClicked:) keyEquivalent:@""] setTarget:self];
+	NSMenuItem *launchAtLogin = [[NSMenuItem alloc] initWithTitle:@"Launch at Login" action:@selector(launchAtLoginMenuClicked:) keyEquivalent:@""];
+	[launchAtLogin setTarget:self];
+
+	if (GetDefaultInt(PrefsLaunchAtLogin)) {
+		[launchAtLogin setState:NSOnState];
+	} else {
+		[launchAtLogin setState:NSOffState];
+	}
+
+	[prefSubmenu addItem:launchAtLogin];
 
 	[prefsMenuItem setSubmenu:prefSubmenu];
 	[statusMenu addItem:prefsMenuItem];
@@ -275,6 +285,14 @@
 
 - (void)bringToFront {
 	[[NSRunningApplication currentApplication] activateWithOptions:NSApplicationActivateIgnoringOtherApps];
+}
+
+- (void)registarDefaults {
+	NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys:
+	                      [NSNumber numberWithInt:NO], PrefsLaunchAtLogin,
+	                      nil];
+
+	[[NSUserDefaults standardUserDefaults] registerDefaults:dict];
 }
 
 @end

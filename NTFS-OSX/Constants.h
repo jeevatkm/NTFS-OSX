@@ -43,3 +43,5 @@ extern NSString * const DADiskDescriptionVolumeKindValue;
 
 extern NSString * const NTFSDiskAppearedNotification;
 extern NSString * const NTFSDiskDisappearedNotification;
+
+extern NSString * const PrefsLaunchAtLogin;

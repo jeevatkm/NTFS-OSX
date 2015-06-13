@@ -48,3 +48,6 @@
 #define Release(typeRef) if (typeRef) { CFRelease((typeRef)); }
 #define AppBundleURL [NSURL fileURLWithPath:[[NSBundle mainBundle] bundlePath]]
 #define OpenUrl(url) [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:url]]
+
+#define GetDefaultInt(k) [[NSUserDefaults standardUserDefaults] integerForKey: k]
+#define SetDefaultInt(n, k)[[NSUserDefaults standardUserDefaults] setInteger: n forKey: k]
