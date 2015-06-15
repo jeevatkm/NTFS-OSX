@@ -41,7 +41,7 @@
 	NSPipe *pipe = [NSPipe pipe];
 	NSFileHandle *file = [pipe fileHandleForReading];
 
-	NSLog(@"Running command: %@",command);
+	LogDebug(@"Running command: %@",command);
 
 	[task setLaunchPath: @"/bin/sh"];
 	[task setArguments: [NSArray arrayWithObjects: @"-c", command, nil]];

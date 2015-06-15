@@ -117,7 +117,7 @@
 	NSString *cmd = [NSString stringWithFormat:@"echo \"%@\" | tee -a %@", [self ntfsConfig], FstabFile];
 
 	[STPrivilegedTask launchedPrivilegedTaskWithLaunchPath:@"/bin/sh" arguments:[NSArray arrayWithObjects: @"-c", cmd, nil]];
-	NSLog(@"NTFS write mode enabled for disk '%@'", self.volumeName);
+	LogInfo(@"Write mode enabled for disk '%@'", self.volumeName);
 }
 
 - (void)mount {
@@ -162,12 +162,12 @@
 
 - (BOOL)isNTFSWritable {
 	BOOL status = [[NSFileManager defaultManager] fileExistsAtPath:FstabFile];
-	NSLog(@"File '%@' exists: %@", FstabFile, status ? @"YES" : @"NO");
+	LogDebug(@"File '%@' exists: %@", FstabFile, status ? @"YES" : @"NO");
 
 	if (status) {
 		NSString *cmd = [NSString stringWithFormat:@"grep \"%@\" %@", volumeUUID, FstabFile];
 		NSString *output = [CommandLine run:cmd];
-		NSLog(@"output: %@", output);
+		LogDebug(@"output: %@", output);
 
 		if ([[self ntfsConfig] isEqualToString:output]) {
 			return TRUE;

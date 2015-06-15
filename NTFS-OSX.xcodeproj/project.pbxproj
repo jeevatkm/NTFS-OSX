@@ -19,6 +19,7 @@
 		13CDB3BA1B1FF08E00A8A374 /* NTFS_OSXTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 13CDB3B91B1FF08E00A8A374 /* NTFS_OSXTests.m */; };
 		13CDB3C71B1FFA2D00A8A374 /* NTFSApp.m in Sources */ = {isa = PBXBuildFile; fileRef = 13CDB3C61B1FFA2D00A8A374 /* NTFSApp.m */; };
 		13CDB3CA1B1FFD4E00A8A374 /* ntfs_osx.png in Resources */ = {isa = PBXBuildFile; fileRef = 13CDB3C91B1FFD4E00A8A374 /* ntfs_osx.png */; };
+		9C1830511B2F6A640055E01D /* Logger.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C1830501B2F6A640055E01D /* Logger.m */; };
 		9C1DA1871B26597000B596CB /* LaunchService.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C1DA1861B26597000B596CB /* LaunchService.m */; };
 		9C5A30121B28FFD100BE77C2 /* ntfs_osx_small.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C5A30111B28FFD100BE77C2 /* ntfs_osx_small.png */; };
 		9C8CA2A81B275AF5009D4DA5 /* ServiceManagement.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C8CA2A71B275AF5009D4DA5 /* ServiceManagement.framework */; };
@@ -61,6 +62,8 @@
 		13CDB3C61B1FFA2D00A8A374 /* NTFSApp.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NTFSApp.m; sourceTree = "<group>"; };
 		13CDB3C81B1FFA6C00A8A374 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		13CDB3C91B1FFD4E00A8A374 /* ntfs_osx.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ntfs_osx.png; sourceTree = "<group>"; };
+		9C18304F1B2F6A640055E01D /* Logger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Logger.h; sourceTree = "<group>"; };
+		9C1830501B2F6A640055E01D /* Logger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Logger.m; sourceTree = "<group>"; };
 		9C1DA1851B26597000B596CB /* LaunchService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LaunchService.h; sourceTree = "<group>"; };
 		9C1DA1861B26597000B596CB /* LaunchService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LaunchService.m; sourceTree = "<group>"; };
 		9C5A30111B28FFD100BE77C2 /* ntfs_osx_small.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ntfs_osx_small.png; sourceTree = "<group>"; };
@@ -184,6 +187,8 @@
 				9C1DA1861B26597000B596CB /* LaunchService.m */,
 				9CC369F01B27719E002D535B /* Constants.h */,
 				9CC369F11B27719E002D535B /* Constants.m */,
+				9C18304F1B2F6A640055E01D /* Logger.h */,
+				9C1830501B2F6A640055E01D /* Logger.m */,
 			);
 			name = Source;
 			sourceTree = "<group>";
@@ -313,6 +318,7 @@
 				9CC369F21B27719E002D535B /* Constants.m in Sources */,
 				13824BCD1B21DD2F00EEE019 /* Arbitration.m in Sources */,
 				13CDB3A91B1FF08D00A8A374 /* main.m in Sources */,
+				9C1830511B2F6A640055E01D /* Logger.m in Sources */,
 				13904C5F1B23F7AA0055253A /* STPrivilegedTask.m in Sources */,
 				13824BC71B215C2700EEE019 /* Preferences.m in Sources */,
 				13CDB3C71B1FFA2D00A8A374 /* NTFSApp.m in Sources */,

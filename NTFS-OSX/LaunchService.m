@@ -115,7 +115,7 @@ LSSharedFileListItemRef InsertItemURL(LSSharedFileListRef inList,
 
 OSStatus RemoveItemFromList(LSSharedFileListRef inList, LSSharedFileListItemRef item) {
 	OSStatus status = LSSharedFileListItemRemove(inList, item);
-	NSLog(@"RemoveItemFromList Status: %d", (int)status);
+	LogDebug(@"RemoveItemFromList Status: %d", (int)status);
 
 	return status;
 }

@@ -44,8 +44,14 @@
 
 - (id)init {
 	if (self = [super init]) {
+        // registering default preferences
         [self registarDefaults];
-        NSLog(@"Is NTFS OS X App launch on login: %@", GetDefaultBool(PrefsLaunchAtLogin) ? @"YES" : @"NO");
+        
+        BOOL debugEnabled = GetDefaultBool(PrefsDebugMode);
+        [Logger setDebugLog:debugEnabled];
+        
+        LogInfo(@"Debug enabled - %@", debugEnabled ? Yes : No);
+        LogInfo(@"Launch on login - %@", GetDefaultBool(PrefsLaunchAtLogin) ? Yes : No);
         
 		// Initializing Status Bar and Menus
 		[self initStatusBar];
@@ -112,11 +118,11 @@
 - (void)ntfsDiskAppeared:(NSNotification *)notification {
 	Disk *disk = notification.object;
 
-	NSLog(@"ntfsDiskAppeared called - %@", disk.BSDName);
-	NSLog(@"NTFS Disks Count: %lu", (unsigned long)[ntfsDisks count]);
+	LogInfo(@"DiskAppeared - %@", disk.BSDName);
+	LogDebug(@"Disks Count - %lu", (unsigned long)[ntfsDisks count]);
 
 	if (disk.isNTFSWritable) {
-		NSLog(@"NTFS write mode already enabled for '%@'", disk.volumeName);
+		LogInfo(@"Write mode already enabled for '%@'", disk.volumeName);
 	} else {
 		NSString *msgText = [NSString stringWithFormat:@"Disk detected: %@", disk.volumeName];
 
@@ -139,7 +145,7 @@
 	NSString *volumePath = disk.volumePath;
 	BOOL isExits = [[NSFileManager defaultManager] fileExistsAtPath:volumePath];
 	if (isExits) {
-		NSLog(@"Opening mounted NTFS Volume '%@'", volumePath);
+		LogDebug(@"Opening mounted NTFS Volume '%@'", volumePath);
 		[[NSWorkspace sharedWorkspace] openURL:[NSURL fileURLWithPath:volumePath]];
         
         [self notifyUser:[NSString stringWithFormat:@"NTFS write enabled for '%@'.", disk.volumeName]];
@@ -149,7 +155,7 @@
 - (void)ntfsDiskDisappeared:(NSNotification *)notification {
 	Disk *disk = notification.object;
 
-	NSLog(@"ntfsDiskDisappeared called - %@", disk.BSDName);
+	LogInfo(@"DiskDisappeared - %@", disk.BSDName);
 
 	[disk disappeared];
 }
@@ -158,10 +164,10 @@
 	Disk *disk = [Disk getDiskForUserInfo:notification.userInfo];
 
 	if (disk) {
-		NSLog(@"NTFS Disk: '%@' mounted at '%@'", disk.BSDName, disk.volumePath);
+		LogDebug(@"NTFS Disk: '%@' mounted at '%@'", disk.BSDName, disk.volumePath);
 
 		disk.favoriteItem = AddPathToFinderFavorites(disk.volumePath);
-		NSLog(@"Added path to favorties");
+		LogDebug(@"Added path to favorties");
 	}
 
 }
@@ -170,11 +176,11 @@
 	Disk *disk = [Disk getDiskForUserInfo:notification.userInfo];
 
 	if (disk) {
-		NSLog(@"NTFS Disk: '%@' unmounted from '%@'", disk.BSDName, disk.volumePath);
+		LogDebug(@"NTFS Disk: '%@' unmounted from '%@'", disk.BSDName, disk.volumePath);
 
 		if (disk.favoriteItem) {
 			RemoveItemFromFinderFavorties((LSSharedFileListItemRef)disk.favoriteItem);
-			NSLog(@"Removed path from favorties");
+			LogDebug(@"Removed path from favorties");
 		}
 	}
 }
@@ -226,7 +232,7 @@
 	statusItem = [[NSStatusBar systemStatusBar] statusItemWithLength:NSSquareStatusItemLength];
 	statusItem.highlightMode = YES;
 	statusItem.image = [NSImage imageNamed:AppStatusBarIconName];
-	statusItem.toolTip = @"Enable native option of NTFS Write on Mac OSX";
+	statusItem.toolTip = @"Enable native option of NTFS Write on Mac OS X";
 	statusItem.menu = statusMenu;
 	statusItem.title = @"";
 	[statusItem.image setTemplate:YES];
@@ -259,6 +265,7 @@
 - (void)registarDefaults {
 	NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys:
 	                      [NSNumber numberWithBool:YES], PrefsLaunchAtLogin,
+                          [NSNumber numberWithBool:NO], PrefsDebugMode,
 	                      nil];
 
 	[[NSUserDefaults standardUserDefaults] registerDefaults:dict];

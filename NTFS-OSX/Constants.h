@@ -37,6 +37,8 @@ extern NSString * const AppBundleID;
 extern NSString * const AppStatusBarIconName;
 
 extern NSString * const FstabFile;
+extern NSString * const Yes;
+extern NSString * const No;
 
 extern NSString * const NSDevicePath;
 extern NSString * const DADiskDescriptionVolumeKindValue;
@@ -45,3 +47,4 @@ extern NSString * const NTFSDiskAppearedNotification;
 extern NSString * const NTFSDiskDisappearedNotification;
 
 extern NSString * const PrefsLaunchAtLogin;
+extern NSString * const PrefsDebugMode;

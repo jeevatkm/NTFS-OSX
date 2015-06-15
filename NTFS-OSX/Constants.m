@@ -39,6 +39,8 @@ NSString * const AppBundleID = @"com.myjeeva.NTFS-OSX";
 NSString * const AppStatusBarIconName = @"ntfs_osx.png";
 
 NSString * const FstabFile = @"/etc/fstab";
+NSString * const Yes = @"Yes";
+NSString * const No = @"No";
 
 NSString * const NSDevicePath = @"NSDevicePath";
 NSString * const DADiskDescriptionVolumeKindValue = @"ntfs";
@@ -47,3 +49,4 @@ NSString * const NTFSDiskAppearedNotification = @"NTFSDiskAppearedNotification";
 NSString * const NTFSDiskDisappearedNotification = @"NTFSDiskDisappearedNotification";
 
 NSString * const PrefsLaunchAtLogin = @"LaunchAtLogin";
+NSString * const PrefsDebugMode = @"DebugMode";

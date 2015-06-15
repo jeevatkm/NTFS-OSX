@@ -43,15 +43,15 @@
 @implementation AppDelegate
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
-	NSLog(@"Loading...");
+	LogInfo(@"Loading...");
 
 	app = [NTFSApp new];
 
-	NSLog(@"Loaded successfully.");
+	LogInfo(@"Loaded successfully.");
 }
 
 - (void)applicationWillTerminate:(NSNotification *)aNotification {
-	NSLog(@"App will terminate.");
+	LogInfo(@"App will terminate.");
 }
 
 @end
