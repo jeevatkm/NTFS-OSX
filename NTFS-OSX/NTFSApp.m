@@ -35,7 +35,6 @@
 #import "Arbitration.h"
 #import "Disk.h"
 #import "LaunchService.h"
-#import "ProgressController.h"
 
 @import ServiceManagement;
 
@@ -45,6 +44,9 @@
 
 - (id)init {
 	if (self = [super init]) {
+        [self registarDefaults];
+        NSLog(@"Is NTFS OS X App launch on login: %@", GetDefaultBool(PrefsLaunchAtLogin) ? @"YES" : @"NO");
+        
 		// Initializing Status Bar and Menus
 		[self initStatusBar];
 
@@ -54,12 +56,7 @@
 		// App & Workspace Notification
 		[self registerSession];
 
-		//progressWindow = [ProgressController new];
-
 		[[NSUserNotificationCenter defaultUserNotificationCenter] setDelegate:self];
-
-		[self registarDefaults];
-		NSLog(@"Is NTFS OS X App launch on login: %@", GetDefaultInt(PrefsLaunchAtLogin) ? @"YES" : @"NO");
 	}
 
 	return self;
@@ -81,10 +78,10 @@
 
 	if ([launchAtLoginMenu state]) {
 		[launchAtLoginMenu setState:NSOffState];
-		SetDefaultInt(NO, PrefsLaunchAtLogin);
+		SetDefaultBool(NO, PrefsLaunchAtLogin);
 	} else {
 		[launchAtLoginMenu setState:NSOnState];
-		SetDefaultInt(YES, PrefsLaunchAtLogin);
+		SetDefaultBool(YES, PrefsLaunchAtLogin);
 	}
 }
 
@@ -94,23 +91,7 @@
 	[[NSPasteboard generalPasteboard] clearContents];
 	[[NSPasteboard generalPasteboard] setString:btcAddress forType:NSStringPboardType];
 
-	if (floor(NSAppKitVersionNumber) >= NSAppKitVersionNumber10_8) {
-		NSUserNotification *userNotify = [NSUserNotification new];
-		userNotify.title = AppDisplayName;
-		userNotify.informativeText = @"BTC address copied.";
-		userNotify.soundName = NSUserNotificationDefaultSoundName;
-		[[NSUserNotificationCenter defaultUserNotificationCenter] deliverNotification:userNotify];
-	} else {
-		NSAlert *userNotify = [NSAlert new];
-		[userNotify addButtonWithTitle:@"Okay"];
-		[userNotify setMessageText:AppDisplayName];
-		[userNotify setInformativeText:[NSString stringWithFormat:@"BTC address '%@' copied.", btcAddress]];
-		[userNotify setAlertStyle:NSInformationalAlertStyle];
-		[userNotify setIcon:[NSApp applicationIconImage]];
-
-		[self bringToFront];
-		[userNotify runModal];
-	}
+    [self notifyUser:@"BTC address copied."];
 }
 
 - (void)paypalMenuClicked:(id)sender {
@@ -138,7 +119,6 @@
 		NSLog(@"NTFS write mode already enabled for '%@'", disk.volumeName);
 	} else {
 		NSString *msgText = [NSString stringWithFormat:@"Disk detected: %@", disk.volumeName];
-		//NSString *infoText = [NSString stringWithFormat:@"Would you like to enable NTFS write mode for disk '%@'", disk.volumeName];
 
 		NSAlert *confirm = [NSAlert new];
 		[confirm addButtonWithTitle:@"Enable"];
@@ -150,30 +130,19 @@
 
 		[self bringToFront];
 		if ([confirm runModal] == NSAlertFirstButtonReturn) {
-			//[progressWindow show];
-
-			//[progressWindow statusText:[NSString stringWithFormat:@"Disk '%@' unmounting...", disk.volumeName]];
 			[disk unmount];
-			//[progressWindow incrementProgressBar:30.0];
-
-			//[progressWindow statusText:@"Enabling Write mode..."];
 			[disk enableNTFSWrite];
-			//[progressWindow incrementProgressBar:30.0];
-
-			//[progressWindow statusText:[NSString stringWithFormat:@"Disk '%@' mounting...", disk.volumeName]];
 			[disk mount];
-			//[progressWindow incrementProgressBar:30.0];
 		}
 	}
-
-	//[progressWindow statusText:@"Opening mounted volume!"];
-	//[progressWindow close];
 
 	NSString *volumePath = disk.volumePath;
 	BOOL isExits = [[NSFileManager defaultManager] fileExistsAtPath:volumePath];
 	if (isExits) {
 		NSLog(@"Opening mounted NTFS Volume '%@'", volumePath);
 		[[NSWorkspace sharedWorkspace] openURL:[NSURL fileURLWithPath:volumePath]];
+        
+        [self notifyUser:[NSString stringWithFormat:@"NTFS write enabled for '%@'.", disk.volumeName]];
 	}
 }
 
@@ -219,7 +188,7 @@
 #pragma mark - Private Methods
 
 - (void)initStatusBar {
-	NSMenu *statusMenu = [[NSMenu alloc] init];
+	NSMenu *statusMenu = [NSMenu new];
 
 	NSMenuItem *prefsMenuItem = [NSMenuItem new];
 	[prefsMenuItem setTitle:@"Preferences"];
@@ -228,7 +197,7 @@
 	NSMenuItem *launchAtLogin = [[NSMenuItem alloc] initWithTitle:@"Launch at Login" action:@selector(launchAtLoginMenuClicked:) keyEquivalent:@""];
 	[launchAtLogin setTarget:self];
 
-	if (GetDefaultInt(PrefsLaunchAtLogin)) {
+	if (GetDefaultBool(PrefsLaunchAtLogin)) {
 		[launchAtLogin setState:NSOnState];
 	} else {
 		[launchAtLogin setState:NSOffState];
@@ -289,10 +258,30 @@
 
 - (void)registarDefaults {
 	NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys:
-	                      [NSNumber numberWithInt:NO], PrefsLaunchAtLogin,
+	                      [NSNumber numberWithBool:YES], PrefsLaunchAtLogin,
 	                      nil];
 
 	[[NSUserDefaults standardUserDefaults] registerDefaults:dict];
+}
+
+- (void)notifyUser:(NSString *)infoText {
+    if (floor(NSAppKitVersionNumber) >= NSAppKitVersionNumber10_8) {
+        NSUserNotification *userNotify = [NSUserNotification new];
+        userNotify.title = AppDisplayName;
+        userNotify.informativeText = infoText;
+        userNotify.soundName = NSUserNotificationDefaultSoundName;
+        [[NSUserNotificationCenter defaultUserNotificationCenter] deliverNotification:userNotify];
+    } else {
+        NSAlert *userNotify = [NSAlert new];
+        [userNotify addButtonWithTitle:@"Okay"];
+        [userNotify setMessageText:AppDisplayName];
+        [userNotify setInformativeText:infoText];
+        [userNotify setAlertStyle:NSInformationalAlertStyle];
+        [userNotify setIcon:[NSApp applicationIconImage]];
+        
+        [self bringToFront];
+        [userNotify runModal];
+    }
 }
 
 @end

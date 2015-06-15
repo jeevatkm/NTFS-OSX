@@ -37,11 +37,9 @@
 @implementation CommandLine
 
 + (NSString *)run:(NSString *)command {
-	NSTask *task = [[NSTask alloc] init];
+	NSTask *task = [NSTask new];
 	NSPipe *pipe = [NSPipe pipe];
 	NSFileHandle *file = [pipe fileHandleForReading];
-
-	//NSArray *arguments = [NSArray arrayWithObjects: @"-c", command, nil];
 
 	NSLog(@"Running command: %@",command);
 

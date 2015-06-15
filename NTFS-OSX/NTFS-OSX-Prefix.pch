@@ -51,3 +51,14 @@
 
 #define GetDefaultInt(k) [[NSUserDefaults standardUserDefaults] integerForKey: k]
 #define SetDefaultInt(n, k)[[NSUserDefaults standardUserDefaults] setInteger: n forKey: k]
+
+#define GetDefault(k) [[NSUserDefaults standardUserDefaults] objectForKey: k]
+#define SetUserDefault(o, k) [[NSUserDefaults standardUserDefaults] setObject: o forKey: k]
+
+#define GetDefaultData(k) [[NSUserDefaults standardUserDefaults] dataForKey: k]
+#define GetDefaultValue(k) [[NSUserDefaults standardUserDefaults] valueForKey: k]
+
+#define RemoveDefault(k) [[NSUserDefaults standardUserDefaults] removeObjectForKey: k]
+
+#define GetDefaultBool(k) [[NSUserDefaults standardUserDefaults] boolForKey: k]
+#define SetDefaultBool(b, k) SetUserDefault( [NSNumber numberWithBool: b], k )
