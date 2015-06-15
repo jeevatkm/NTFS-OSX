@@ -1,11 +1,11 @@
 NTFS OS X
 -----------
-Enables native option of **NTFS Write mode** for External Drives & USB memory stick on-the-fly.
+Enables native option of **NTFS Write mode** for External Drives & USB memory stick on-the-fly. Easy to use!
 
 
 How NTFS OS X App Works?
 ------------------------
--- TODO
+*TODO*
 
 Download
 ---------
