@@ -38,6 +38,8 @@ NSString * const AppDisplayName = @"NTFS OS X";
 NSString * const AppBundleID = @"com.myjeeva.NTFS-OSX";
 NSString * const AppStatusBarIconName = @"ntfs_osx.png";
 
+NSString * const BTCAddress = @"1KaNKjmAFRhM5Q8aP5QWb1QTEYdGH11mZg";
+
 NSString * const FstabFile = @"/etc/fstab";
 NSString * const Yes = @"Yes";
 NSString * const No = @"No";

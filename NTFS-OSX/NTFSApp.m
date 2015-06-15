@@ -92,10 +92,8 @@
 }
 
 - (void)btcMenuClicked:(id)sender {
-	NSString *btcAddress = @"1KaNKjmAFRhM5Q8aP5QWb1QTEYdGH11mZg";
-
 	[[NSPasteboard generalPasteboard] clearContents];
-	[[NSPasteboard generalPasteboard] setString:btcAddress forType:NSStringPboardType];
+	[[NSPasteboard generalPasteboard] setString:BTCAddress forType:NSStringPboardType];
 
     [self notifyUser:@"BTC address copied."];
 }
@@ -220,8 +218,8 @@
 	[donateMenuItem setTitle:@"Donate"];
 
 	NSMenu *donateSubmenu = [NSMenu new];
-	[[donateSubmenu addItemWithTitle:@"Paypal" action:@selector(paypalMenuClicked:) keyEquivalent:@""] setTarget:self];
-	[[donateSubmenu addItemWithTitle:@"BTC 1KaNKjmAFRhM5Q8aP5QWb1QTEYdGH11mZg" action:@selector(btcMenuClicked:) keyEquivalent:@""]  setTarget:self];
+	[[donateSubmenu addItemWithTitle:@"PayPal" action:@selector(paypalMenuClicked:) keyEquivalent:@""] setTarget:self];
+	[[donateSubmenu addItemWithTitle:@"BTC" action:@selector(btcMenuClicked:) keyEquivalent:@""]  setTarget:self];
 	[donateMenuItem setSubmenu:donateSubmenu];
 	[statusMenu addItem:donateMenuItem];
 

@@ -36,6 +36,8 @@ extern NSString * const AppDisplayName;
 extern NSString * const AppBundleID;
 extern NSString * const AppStatusBarIconName;
 
+extern NSString * const BTCAddress;
+
 extern NSString * const FstabFile;
 extern NSString * const Yes;
 extern NSString * const No;
